@@ -57,24 +57,25 @@ if not species_choice:
 # Filtrer data
 # --------------------------------------------------
 
-df_filt = df[df["species"].isin(species_choice)].copy()
+df_filt = df[df["dyreart"].isin(artsvalg)]
 
 if metric_choice == "Historisk frekvens":
-    metric_col = "freq_hist"
+    metric_col = "historisk_frekvens"
     metric_label = "Historisk frekvens (per mill. kjøretøykm)"
 else:
-    metric_col = "risk_pred"
+    metric_col = "predikert_risiko"
     metric_label = "Predikert risiko (hazard)"
 
-# Aggreger dersom fleire artar er valde
 df_grouped = (
     df_filt
     .groupby(
-        ["segment_id", "road_name", "length_km", "municipality"],
+        ["strekning_id", "vegnavn", "lengde_km", "kommune"],
         as_index=False
     )[metric_col]
     .sum()
 )
+
+
 
 # Top N
 df_top = (
