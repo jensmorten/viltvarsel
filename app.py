@@ -31,7 +31,7 @@ metric_choice = st.sidebar.radio(
     ]
 )
 
-species_choice = st.sidebar.multiselect(
+artsvalg = st.sidebar.multiselect(
     "Vel dyreartar:",
     options=["Elg", "Hjort", "Rådyr"],
     default=["Elg", "Hjort", "Rådyr"]
@@ -49,7 +49,7 @@ top_n = st.sidebar.slider(
 # Valider input
 # --------------------------------------------------
 
-if not species_choice:
+if not artsvalg:
     st.warning("Vel minst éin dyreart.")
     st.stop()
 
