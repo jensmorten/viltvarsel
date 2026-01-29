@@ -94,7 +94,7 @@ st.markdown(
     f"""
     **Viser topp {top_n} vegstrekningar**  
     Sortert etter: **{metric_label}**  
-    Dyreartar: **{", ".join(species_choice)}**
+    Dyreartar: **{", ".join(artsvalg)}**
     """
 )
 
