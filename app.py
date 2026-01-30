@@ -12,7 +12,7 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("vegstrekning_moc.csv", sep=',')
+    df = pd.read_csv("frekvens.csv", sep=',')
     return df
 
 df = load_data()
@@ -57,29 +57,18 @@ if not artsvalg:
 # Filtrer data
 # --------------------------------------------------
 
-df_filt = df[df["dyreart"].isin(artsvalg)]
+df_filt = df[df["Art"].isin(artsvalg)]
 
 if metric_choice == "Historisk frekvens":
-    metric_col = "historisk_frekvens"
-    metric_label = "Historisk frekvens (per mill. kjøretøykm)"
+    metric_col = "frekvens"
+    metric_label = "Historisk frekvens (per  kjøretøy-meter per år)"
 else:
-    metric_col = "predikert_risiko"
-    metric_label = "Predikert risiko (hazard)"
-
-df_grouped = (
-    df_filt
-    .groupby(
-        ["strekning_id", "vegnavn", "lengde_km", "kommune"],
-        as_index=False
-    )[metric_col]
-    .sum()
-)
-
+   None
 
 
 # Top N
 df_top = (
-    df_grouped
+    df_filt
     .sort_values(metric_col, ascending=False)
     .head(top_n)
 )
@@ -101,9 +90,8 @@ st.markdown(
 st.dataframe(
     df_top.rename(columns={
         metric_col: metric_label,
-        "road_name": "Veg",
-        "length_km": "Lengd (km)",
-        "municipality": "Kommune"
+        "Vegobjekt_540_id": "Veg-objekt_id",
+        "Vegobjekt_540_lengde": "Lengde (m)",
     }),
     use_container_width=True
 )
