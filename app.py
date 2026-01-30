@@ -12,8 +12,7 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("frekvens.csv", sep=',')
-    df=df[["Vegobjekt_540_id","Art","Ã…DT, total","Vegobjekt_540_lengde","antall_kollisjoner","frekvens"]]
+    df = pd.read_csv("frekvens.csv", sep=',', encoding='utf-8')
     return df
 
 df = load_data()
