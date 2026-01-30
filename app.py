@@ -12,7 +12,7 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("frekvens.csv", sep=',', encoding='utf-8')
+    df = pd.read_csv("frekvens_2.csv", sep=',', encoding='utf-8')
     return df
 
 df = load_data()
