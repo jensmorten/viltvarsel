@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(
-    page_title="Dyrepåkjørsler – risikostrekningar",
+    page_title="Dyrepåkjørsler – risikostrekninger",
     layout="wide"
 )
 
@@ -32,13 +32,13 @@ metric_choice = st.sidebar.radio(
 )
 
 artsvalg = st.sidebar.multiselect(
-    "Vel dyreartar:",
+    "Velg dyrearter:",
     options=["Elg", "Hjort", "Rådyr"],
     default=["Elg", "Hjort", "Rådyr"]
 )
 
 top_n = st.sidebar.slider(
-    "Tal strekningar:",
+    "Tal strekninger:",
     min_value=5,
     max_value=50,
     value=10,
@@ -104,12 +104,10 @@ with st.expander("ℹ️ Om tala"):
     st.markdown(
         """
         **Historisk frekvens**  
-        = observerte dyrepåkjørsler normalisert på trafikkmengde  
+        = observerte dyrepåkjørsler normalisert på trafikkmengde og veglengde
         
         **Predikert risiko**  
-        = modellert risiko basert på vegtype, landskap og vilttettheit  
-        
-        Tala er meint for samanlikning mellom strekningar –  
-        ikkje som eksakt sannsyn for enkeltbilar.
+        = modellert risiko basert på vegtype, landskap og vilttettheit  (ikke klart ennå)
+
         """
     )
