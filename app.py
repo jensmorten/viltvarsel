@@ -61,7 +61,7 @@ df_filt = df[df["Art"].isin(artsvalg)]
 
 if metric_choice == "Historisk frekvens":
     metric_col = "frekvens"
-    metric_label = "Historisk frekvens (per  kjøretøy-meter per år)"
+    metric_label = "Historisk frekvens (kollision per  kjøretøy-meter per år)"
 else:
    None
 
@@ -87,15 +87,29 @@ st.markdown(
     Dyreartar: **{", ".join(artsvalg)}**
     """
 )
-df_visning = df_top.rename(columns={
-    metric_col: metric_label,
-    "Vegobjekt_540_id": "Veg-objekt_id",
+
+df_visning = df_top.copy()
+
+# ID som heiltal (utan desimalar)
+df_visning["Vegobjekt_540_id"] = df_visning["Vegobjekt_540_id"].astype("Int64")
+
+# Avrund ÅDT og lengde til heiltal
+df_visning["ÅDT, total"] = df_visning["ÅDT, total"].round(0).astype("Int64")
+df_visning["Vegobjekt_540_lengde"] = df_visning["Vegobjekt_540_lengde"].round(0).astype("Int64")
+
+df_visning = df_visning.rename(columns={
+    "Vegobjekt_540_id": "Veg-objekt ID",
     "Vegobjekt_540_lengde": "Lengde (m)",
+    metric_col: metric_label
 })
 
-styled_df = df_visning.style.format(
-    {metric_label: "{:.2E}"}
-)
+
+styled_df = df_visning.style.format({
+    metric_label: "{:.2E}",   # frekvens
+    "ÅDT, total": "{:.0f}",   # heiltal
+    "Lengde (m)": "{:.0f}",   # heiltal
+})
+
 
 st.dataframe(
     styled_df,
