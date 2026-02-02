@@ -106,7 +106,7 @@ df_visning = df_visning.rename(columns={
 df_visning["lenke"] = (
     "https://vegkart.atlas.vegvesen.no/#kartlag:geodata"
     "/@186753,7056711,10/valgt:"
-    + df_visning["Vegobjekt_540_id"].astype(str)
+    + df_visning["Veg-objekt ID"].astype(str)
     + ":540"
 )
 
