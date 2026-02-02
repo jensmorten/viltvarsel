@@ -93,7 +93,7 @@ st.dataframe(
         "Vegobjekt_540_id": "Veg-objekt_id",
         "Vegobjekt_540_lengde": "Lengde (m)",
     }),
-    width=content
+    width='content'
 )
 
 # --------------------------------------------------
