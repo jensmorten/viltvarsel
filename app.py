@@ -103,17 +103,31 @@ df_visning = df_visning.rename(columns={
     metric_col: metric_label
 })
 
+df_visning["lenke"] = (
+    "https://vegkart.atlas.vegvesen.no/#kartlag:geodata"
+    "/@186753,7056711,10/valgt:"
+    + df_visning["Vegobjekt_540_id"].astype(str)
+    + ":540"
+)
+
+
 
 styled_df = df_visning.style.format({
     metric_label: "{:.2E}",   # frekvens
     "ÅDT, total": "{:.0f}",   # heiltal
-    "Lengde (m)": "{:.0f}",   # heiltal
+    "Lengde (m)": "{:.0f}",   # heiltal,
 })
 
 
 st.dataframe(
     styled_df,
-    width='content'
+    width='content',
+    column_config={
+        "lenke": st.column_config.LinkColumn(
+            "Vegkart",
+            display_text="Åpne i Vegkart"
+        )
+    }
 )
 
 
