@@ -99,7 +99,7 @@ styled_df = df_visning.style.format(
 
 st.dataframe(
     styled_df,
-    use_container_width=True
+    widt='content'
 )
 
 
