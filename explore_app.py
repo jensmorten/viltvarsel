@@ -223,6 +223,20 @@ if len(df_calc) > 0:
 
     df_calc = df_calc.sort_values("frekvens", ascending=False).drop_duplicates()
 
+    # New filter for antall_kollisjoner min and max
+    min_koll = df_calc["antall_kollisjoner"].min()
+    max_koll = df_calc["antall_kollisjoner"].max()
+    antall_koll_range = st.sidebar.slider(
+        "Antall kollisjoner",
+        min_koll,
+        max_koll,
+        (min_koll, max_koll)
+    )
+    df_calc = df_calc[
+        (df_calc["antall_kollisjoner"] >= antall_koll_range[0]) &
+        (df_calc["antall_kollisjoner"] <= antall_koll_range[1])
+    ]
+
 # -------------------------------------------------------------------
 # VISNING
 # -------------------------------------------------------------------
