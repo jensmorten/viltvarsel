@@ -73,14 +73,6 @@ df_top = (
     .head(top_n)
 )
 
-df_visning = df_top.copy()
-
-df_visning[metric_col] = df_visning[metric_col].astype(float)
-
-styled_df = df_visning.style.format(
-    {metric_col: "{:.2E}"}
-)
-
 
 # --------------------------------------------------
 # Hovudvisning
@@ -95,14 +87,19 @@ st.markdown(
     Dyreartar: **{", ".join(artsvalg)}**
     """
 )
+df_visning = df_top.rename(columns={
+    metric_col: metric_label,
+    "Vegobjekt_540_id": "Veg-objekt_id",
+    "Vegobjekt_540_lengde": "Lengde (m)",
+})
+
+styled_df = df_visning.style.format(
+    {metric_label: "{:.2E}"}
+)
 
 st.dataframe(
-    styled_df.rename(columns={
-        metric_col: metric_label,
-        "Vegobjekt_540_id": "Veg-objekt_id",
-        "Vegobjekt_540_lengde": "Lengde (m)",
-    }),
-    width='content'
+    styled_df,
+    use_container_width=True
 )
 
 
