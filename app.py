@@ -134,7 +134,7 @@ styled_df = df_visning.style.format({
 })
 
 st.dataframe(
-    styled_df,
+    styled_df.reset_index(drop=True),
     column_config={
         "lenke": st.column_config.LinkColumn(
             "Vegkart",
@@ -143,6 +143,7 @@ st.dataframe(
     },
     width="content"
 )
+
 
 # --------------------------------------------------
 # Enkel forklaring
