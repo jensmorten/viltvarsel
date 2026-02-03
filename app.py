@@ -79,7 +79,7 @@ st.markdown(
     """
 )
 
-df_visning = df_top[].copy()
+df_visning = df_top.copy()
 
 # -----------------------------
 # Rydd datatypar for visning
