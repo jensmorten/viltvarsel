@@ -140,7 +140,8 @@ st.dataframe(
             "Vegkart",
             display_text="Åpne i Vegkart"
         )
-    }
+    },
+    width="content"
 )
 
 # --------------------------------------------------
