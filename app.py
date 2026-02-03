@@ -127,6 +127,8 @@ df_visning = df_visning[
 # Styling
 # -----------------------------
 
+df_visning = df_visning.reset_index(drop=True)
+
 styled_df = df_visning.style.format({
     metric_label: "{:.2E}",
     "ÅDT (Årsdøgntrafikk)": "{:.0f}",
@@ -134,7 +136,7 @@ styled_df = df_visning.style.format({
 })
 
 st.dataframe(
-    styled_df.reset_index(drop=True),
+    styled_df,
     column_config={
         "lenke": st.column_config.LinkColumn(
             "Vegkart",
