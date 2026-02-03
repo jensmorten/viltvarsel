@@ -97,7 +97,7 @@ df_visning["Vegobjekt_540_lengde"] = df_visning["Vegobjekt_540_lengde_avg"].asty
 df_visning["lenke"] = (
     "https://vegkart.atlas.vegvesen.no/#kartlag:geodata"
     "/@"
-    + df_visning["UTM_øst_int_avg"].astype(str)
+    + df_visning["UTM33_øst_int_avg"].astype(str)
     + ","
     + df_visning["UTM33_nord_int_avg"].astype(str)
     + ",10/valgt:"
