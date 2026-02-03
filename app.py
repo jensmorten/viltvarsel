@@ -57,7 +57,7 @@ if not artsvalg:
 df_filt = df[df["Art"].isin(artsvalg)].copy()
 
 metric_col = "frekvens"
-metric_label = "Historisk frekvens (kollisjon per kjøretøy–meter–år)"
+metric_label = "Historisk frekvens (kollisjon per kjøretøy per år per 100 km)"
 
 df_top = (
     df_filt
@@ -115,6 +115,7 @@ df_visning = df_visning.rename(columns={
     "Vegobjekt_540_lengde": "Lengde (m)",
     metric_col: metric_label
 }).copy()
+
 
 #df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
 df_visning = df_visning[
