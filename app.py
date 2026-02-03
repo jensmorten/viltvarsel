@@ -117,7 +117,7 @@ df_visning = df_visning.rename(columns={
     metric_col: metric_label
 })
 
-df_visning=df_visning['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'lenke']
+df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'lenke']]
 
 # -----------------------------
 # Styling
