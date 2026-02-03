@@ -116,7 +116,7 @@ df_visning = df_visning.rename(columns={
     metric_col: metric_label
 }).copy()
 
-df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'lenke']].copy()
+df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
 
 # -----------------------------
 # Styling
@@ -136,6 +136,7 @@ st.dataframe(
             "Vegkart",
             display_text="Åpne i Vegkart"
         )
+    width='content'
     }
 )
 
