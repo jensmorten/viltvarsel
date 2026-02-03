@@ -111,9 +111,8 @@ df_visning["lenke"] = (
 
 df_visning = df_visning.rename(columns={
     "Vegobjekt_540_id": "Veg_ID",
-    "Ådt_avg": "ÅDT",
+    "Ådt_avg": "ÅDT (Årsdøgntrafikk)",
     "Vegobjekt_540_lengde": "Lengde (m)",
-    "ÅDT": "ÅDT (Årsdøgntrafikk)",
     metric_col: metric_label
 }).copy()
 
