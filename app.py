@@ -178,7 +178,7 @@ st.dataframe(
     column_config={
         "lenke": st.column_config.LinkColumn(
             "Vegkart",
-            display_text="Åpne i Vegkart"
+            display_text="Opne i Vegkart"
         )
     },
     width="content"
@@ -192,24 +192,24 @@ st.dataframe(
 with st.expander("ℹ️ Om tala"):
     st.markdown(
         """
-        **Historisk frekvens (per 100 km)**  
+        Historisk frekvens (per 100 km)  
         = observerte dyrepåkjørsler normaliserte for trafikkmengde og veglengd,  
-        uttrykt som forventa tal på kollisjonar per **100 køyretøykilometer per år**.
+        uttrykt som forventa tal på kollisjonar per 100 køyretøykilometer per år.
 
-        Dette gir eit mål på **grunnrisiko per køyrelengd** for ein enkelt bil,
+        Dette gir eit mål på grunnrisiko per køyrelengd for ein enkelt bil,
         og gjer det mogleg å samanlikne risiko mellom ulike vegstrekningar
         uavhengig av trafikkmengde og lengd.
 
-        **Samanlikning med yrkesrisiko (illustrativ)**  
+        Samanlikning med yrkesrisiko (illustrativ) 
         For å gi eit meir intuitivt risikobilete er frekvensen omrekna til
-        **årleg risiko per bil**, basert på ein føresetnad om årleg køyrelengd på 15000 km og at ein kollisjon i snitt gir same konsekvens som ei arbeidslulukke.
+        årleg risiko per bil, basert på ein føresetnad om årleg køyrelengd på 15000 km og at ein kollisjon i snitt gir same konsekvens som ei arbeidslulukke.
         Denne årsrisikoen blir samanlikna med melde arbeidsulukker
         (med fråver) per årsverk i ulike yrke (tal og kategoriar frå SSB). Så kolonna betyr "å kjøre 15000 km på denne strekninga vil gi om lag same risiko som å jobbe eit årsverk i dette yrket". 
 
         Samanlikninga er meint som ei **grovt illustrativ skala** basert på desse føresetnadane. 
 
-        **Predikert risiko**  
+        Predikert risiko  
         = historisk grunnfrekvens justert med ein årstidsfaktor, estimert frå ein statistisk modell
-(       Negativ binomial-regresjon) basert på observerte dyrepåkjørsler.
+        (Negativ binomial-regresjon) basert på observerte dyrepåkjørsler.
         """
     )
