@@ -113,8 +113,11 @@ df_visning = df_visning.rename(columns={
     "Vegobjekt_540_id": "Veg_ID",
     "Ådt_avg": "ÅDT",
     "Vegobjekt_540_lengde": "Lengde (m)",
+    "ÅDT": "ÅDT (Årsdøgntrafikk)",
     metric_col: metric_label
 })
+
+df_visning=df_visning['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'lenke']
 
 # -----------------------------
 # Styling
@@ -122,7 +125,7 @@ df_visning = df_visning.rename(columns={
 
 styled_df = df_visning.style.format({
     metric_label: "{:.2E}",
-    "ÅDT": "{:.0f}",
+    "ÅDT (Årsdøgntrafikk)": "{:.0f}",
     "Lengde (m)": "{:.0f}",
 })
 
