@@ -130,13 +130,11 @@ styled_df = df_visning.style.format({
 
 st.dataframe(
     styled_df,
-    use_container_width=True,
     column_config={
         "lenke": st.column_config.LinkColumn(
             "Vegkart",
             display_text="Åpne i Vegkart"
         )
-    width='content'
     }
 )
 
