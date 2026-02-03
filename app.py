@@ -154,10 +154,22 @@ st.dataframe(
 with st.expander("ℹ️ Om tala"):
     st.markdown(
         """
-        **Historisk frekvens**  
-        = observerte dyrepåkjørsler normalisert på trafikkmengde og veglengde  
-        
-        Tallet viser **kollisjoner per kjøretøy–meter–år**  
-        og er ment for **sammenlikning mellom vegstrekninger**.
+        **Historisk frekvens (per 100 km)**  
+        = observerte dyrepåkjørsler normaliserte for trafikkmengde og veglengd,  
+        uttrykt som forventa tal på kollisjonar per **100 køyretøykilometer per år**.
+
+        Dette gir eit mål på **grunnrisiko per køyrelengd** for ein enkelt bil,
+        og gjer det mogleg å samanlikne risiko mellom ulike vegstrekningar
+        uavhengig av trafikkmengde og lengd.
+
+        **Samanlikning med yrkesrisiko (illustrativ)**  
+        For å gi eit meir intuitivt risikobilete er frekvensen omrekna til
+        **årleg risiko per bil**, basert på ein føresetnad om årleg køyrelengd.
+        Denne årsrisikoen blir samanlikna med melde arbeidsulukker
+        (med fråvær) per årsverk i ulike yrke.
+
+        Samanlikninga er meint som ei **grovt illustrativ skala**.
+        Dyrepåkjørsler og arbeidsulukker varierer i alvorlegheitsgrad
+        og kan ikkje samanliknast direkte når det gjeld konsekvensar.
         """
     )
