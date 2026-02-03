@@ -1,10 +1,38 @@
 import streamlit as st
 import pandas as pd
+from datetime import date
+import numpy as np
 
 st.set_page_config(
     page_title="Dyrepåkjørsler – risikostrekninger",
     layout="wide"
 )
+
+# --------------------------------------------------
+# Årstid frå dato
+# --------------------------------------------------
+
+def finn_årstid(dato):
+    m = dato.month
+    if m in (12, 1, 2):
+        return "Vinter"
+    elif m in (3, 4, 5):
+        return "Vår"
+    elif m in (6, 7, 8):
+        return "Sommar"
+    else:
+        return "Haust"
+
+
+ARSTID_JUSTERING = {
+    "Haust": 1.00,
+    "Vinter": 0.88,
+    "Vår": 0.65,
+    "Sommar": 0.57,
+}
+
+DAGENS_ÅRSTID = finn_årstid(date.today())
+
 
 # --------------------------------------------------
 # Data loading
@@ -25,8 +53,9 @@ st.sidebar.title("Innstillinger")
 
 metric_choice = st.sidebar.radio(
     "Vis etter:",
-    options=["Historisk frekvens"]  # predikert kjem seinare
+    options=["Historisk frekvens", "Predikert risiko"]
 )
+
 
 artsvalg = st.sidebar.multiselect(
     "Velg dyrearter:",
@@ -56,8 +85,17 @@ if not artsvalg:
 
 df_filt = df[df["Art"].isin(artsvalg)].copy()
 
-metric_col = "frekvens"
-metric_label = "Historisk frekvens (kollisjon per kjøretøy per år per 100 km)"
+df_filt["predikert_risiko"] = (
+    df_filt["frekvens"]
+    * ARSTID_JUSTERING[DAGENS_ÅRSTID]
+)
+
+if metric_choice == "Historisk frekvens":
+    metric_col = "frekvens"
+    metric_label = "Historisk frekvens (kollisjon per kjøretøy per år per 100 km)"
+else:
+    metric_col = "predikert_risiko"
+    metric_label = "Predikert risiko"
 
 df_top = (
     df_filt
@@ -169,5 +207,9 @@ with st.expander("ℹ️ Om tala"):
         (med fråver) per årsverk i ulike yrke (tal og kategoriar frå SSB). Så kolonna betyr "å kjøre 15000 km på denne strekninga vil gi om lag same risiko som å jobbe eit årsverk i dette yrket". 
 
         Samanlikninga er meint som ei **grovt illustrativ skala** basert på desse føresetnadane. 
+
+        **Predikert risiko**  
+        = historisk grunnfrekvens justert med ein årstidsfaktor, estimert frå ein statistisk modell
+(       Negativ binomial-regresjon) basert på observerte dyrepåkjørsler.
         """
     )
