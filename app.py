@@ -10,7 +10,7 @@ st.set_page_config(
 # Data loading
 # --------------------------------------------------
 
-@st.cache_data
+#@st.cache_data
 def load_data():
     df = pd.read_csv("frekvens_final.csv", encoding="utf-8")
     return df
@@ -116,6 +116,7 @@ df_visning = df_visning.rename(columns={
     metric_col: metric_label
 }).copy()
 
+print(df_visning.columns)
 
 #df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
 df_visning = df_visning[
