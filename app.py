@@ -164,12 +164,10 @@ with st.expander("ℹ️ Om tala"):
 
         **Samanlikning med yrkesrisiko (illustrativ)**  
         For å gi eit meir intuitivt risikobilete er frekvensen omrekna til
-        **årleg risiko per bil**, basert på ein føresetnad om årleg køyrelengd.
+        **årleg risiko per bil**, basert på ein føresetnad om årleg køyrelengd på 15000 km og at ein kollisjon i snitt gir same konsekvens som ei arbeidslulukke.
         Denne årsrisikoen blir samanlikna med melde arbeidsulukker
-        (med fråvær) per årsverk i ulike yrke.
+        (med fråver) per årsverk i ulike yrke. Så kolonna betyr "å kjøre 15000 km på denne strekninga vil gi om lag same risiko som å jobbe eit årsverk i dette yrket". 
 
-        Samanlikninga er meint som ei **grovt illustrativ skala**.
-        Dyrepåkjørsler og arbeidsulukker varierer i alvorlegheitsgrad
-        og kan ikkje samanliknast direkte når det gjeld konsekvensar.
+        Samanlikninga er meint som ei **grovt illustrativ skala** basert på desse føresetnadane. 
         """
     )
