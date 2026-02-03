@@ -99,7 +99,7 @@ df_visning["lenke"] = (
     "/@"
     + df_visning["UTM33_øst_int_avg"].astype(str)
     + ","
-    + df_visning["UTM33_nord_int_avg"].astype(str)
+    + df_visning["UTM_nord_int_avg"].astype(str)
     + ",10/valgt:"
     + df_visning["Vegobjekt_540_id"].astype(str)
     + ":540"
