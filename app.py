@@ -116,7 +116,10 @@ df_visning = df_visning.rename(columns={
     metric_col: metric_label
 }).copy()
 
-df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
+#df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
+df_visning = df_visning[
+    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', metric_label, 'lenke']
+].copy()
 
 # -----------------------------
 # Styling
