@@ -85,10 +85,10 @@ df_visning = df_top.copy()
 # Rydd datatypar for visning
 # -----------------------------
 
-df_visning["egobjekt_540_id"] = df_visning["egobjekt_540_id"].astype("Int64")
+df_visning["Vegobjekt_540_id"] = df_visning["Vegobjekt_540_id"].astype("Int64")
 
-df_visning["ÅDT, total_avg"] = df_visning["ÅDT, total_avg"].astype("Int64")
-df_visning["Vegobjekt_540_lengde_avg"] = df_visning["Vegobjekt_540_lengde_avg"].astype("Int64")
+df_visning["Ådt_avg"] = df_visning["ÅDT, total_avg"].astype("Int64")
+df_visning["Vegobjekt_540_lengde"] = df_visning["Vegobjekt_540_lengde_avg"].astype("Int64")
 
 # -----------------------------
 # Lag Vegkart-lenke
@@ -101,7 +101,7 @@ df_visning["lenke"] = (
     + ","
     + df_visning["UTM33_øst_int_avg"].astype(str)
     + ",10/valgt:"
-    + df_visning["egobjekt_540_id"].astype(str)
+    + df_visning["Vegobjekt_540_id"].astype(str)
     + ":540"
 )
 
@@ -110,9 +110,9 @@ df_visning["lenke"] = (
 # -----------------------------
 
 df_visning = df_visning.rename(columns={
-    "egobjekt_540_id": "Veg-objekt ID",
-    "ÅDT, total_avg": "ÅDT",
-    "Vegobjekt_540_lengde_avg": "Lengde (m)",
+    "Vegobjekt_540_id": "Veg_ID",
+    "Ådt_avg": "ÅDT",
+    "Vegobjekt_540_lengde": "Lengde (m)",
     metric_col: metric_label
 })
 
