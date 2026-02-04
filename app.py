@@ -195,11 +195,11 @@ df_visning_koll = df_visning_koll.rename(columns={
 
 #df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
 df_visning = df_visning[
-    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'antall_kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
+    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
 ].copy()
 
 df_visning_koll = df_visning_koll[
-    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'antall_kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
+    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
 ].copy()
 
 
