@@ -53,7 +53,7 @@ st.sidebar.title("Innstillinger")
 
 metric_choice = st.sidebar.radio(
     "Vis etter:",
-    options=["Historisk frekvens", "Predikert risiko"]
+    options=["Historisk frekvens", "Predikert frekvens"]
 )
 
 
@@ -95,7 +95,7 @@ if metric_choice == "Historisk frekvens":
     metric_label = "Historisk frekvens (kollisjon per kjøretøy per år per 100 km)"
 else:
     metric_col = "predikert_risiko"
-    metric_label = "Predikert risiko"
+    metric_label = "Predikert frekvens (kollisjon per kjøretøy per år per 100 km)"
 
 df_top = (
     df_filt
