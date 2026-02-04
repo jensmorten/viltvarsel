@@ -151,14 +151,16 @@ df_visning = df_visning.rename(columns={
     "Vegobjekt_540_id": "Veg_ID",
     "Ådt_avg": "ÅDT (Årsdøgntrafikk)",
     "Vegobjekt_540_lengde": "Lengde (m)",
+    "antall_kollisjoner": "kollisjonar siste år"
+    "samanlikning_yrke": "Samanlikning med risiko i yrke"
     metric_col: metric_label
 }).copy()
 
-print(df_visning.columns)
+#print(df_visning.columns)
 
 #df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
 df_visning = df_visning[
-    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'antall_kollisjoner', metric_label, 'lenke','samanlikning_yrke']
+    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'antall_kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
 ].copy()
 
 # -----------------------------
