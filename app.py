@@ -103,6 +103,13 @@ df_top = (
     .head(top_n)
 )
 
+df_top_kollisjon = (
+    df_filt
+    .sort_values('antall_kollisjoner', ascending=False)
+    .head(top_n)
+)
+
+
 # --------------------------------------------------
 # Hovudvisning
 # --------------------------------------------------
@@ -118,21 +125,40 @@ st.markdown(
 )
 
 df_visning = df_top.copy()
+df_visning_koll = df_top_kollisjon.copy()
+
 
 # -----------------------------
 # Rydd datatypar for visning
 # -----------------------------
 
 df_visning["Vegobjekt_540_id"] = df_visning["Vegobjekt_540_id"].astype("Int64")
+df_visning_koll["Vegobjekt_540_id"] = df_visning_koll["Vegobjekt_540_id"].astype("Int64")
+
 
 df_visning["Ådt_avg"] = df_visning["ÅDT, total_avg"].astype("Int64")
+df_visning_koll["Ådt_avg"] = df_visning_koll["ÅDT, total_avg"].astype("Int64")
+
 df_visning["Vegobjekt_540_lengde"] = df_visning["Vegobjekt_540_lengde_avg"].astype("Int64")
+df_visning_koll["Vegobjekt_540_lengde"] = df_visning_koll["Vegobjekt_540_lengde_avg"].astype("Int64")
+
 
 # -----------------------------
 # Lag Vegkart-lenke
 # -----------------------------
 
 df_visning["lenke"] = (
+    "https://vegkart.atlas.vegvesen.no/#kartlag:geodata"
+    "/@"
+    + df_visning["UTM33_øst_int_avg"].astype(str)
+    + ","
+    + df_visning["UTM_nord_int_avg"].astype(str)
+    + ",10/valgt:"
+    + df_visning["Vegobjekt_540_id"].astype(str)
+    + ":540"
+)
+
+df_visning_koll["lenke"] = (
     "https://vegkart.atlas.vegvesen.no/#kartlag:geodata"
     "/@"
     + df_visning["UTM33_øst_int_avg"].astype(str)
@@ -151,8 +177,17 @@ df_visning = df_visning.rename(columns={
     "Vegobjekt_540_id": "Veg_ID",
     "Ådt_avg": "ÅDT (Årsdøgntrafikk)",
     "Vegobjekt_540_lengde": "Lengde (m)",
-    "antall_kollisjoner": "kollisjonar siste år"
-    "samanlikning_yrke": "Samanlikning med risiko i yrke"
+    "antall_kollisjoner": "kollisjonar siste år",
+    "samanlikning_yrke": "Samanlikning med risiko i yrke",
+    metric_col: metric_label
+}).copy()
+
+df_visning_koll = df_visning_koll.rename(columns={
+    "Vegobjekt_540_id": "Veg_ID",
+    "Ådt_avg": "ÅDT (Årsdøgntrafikk)",
+    "Vegobjekt_540_lengde": "Lengde (m)",
+    "antall_kollisjoner": "kollisjonar siste år",
+    "samanlikning_yrke": "Samanlikning med risiko i yrke",
     metric_col: metric_label
 }).copy()
 
@@ -163,11 +198,17 @@ df_visning = df_visning[
     ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'antall_kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
 ].copy()
 
+df_visning_koll = df_visning_koll[
+    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'antall_kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
+].copy()
+
+
 # -----------------------------
 # Styling
 # -----------------------------
 
 df_visning = df_visning.reset_index(drop=True)
+df_visning_koll = df_visning_koll.reset_index(drop=True)
 
 styled_df = df_visning.style.format({
     metric_label: "{:.2E}",
@@ -175,8 +216,25 @@ styled_df = df_visning.style.format({
     "Lengde (m)": "{:.0f}",
 })
 
+styled_df_koll = styled_df_koll.style.format({
+    metric_label: "{:.2E}",
+    "ÅDT (Årsdøgntrafikk)": "{:.0f}",
+    "Lengde (m)": "{:.0f}",
+})
+
 st.dataframe(
     styled_df,
+    column_config={
+        "lenke": st.column_config.LinkColumn(
+            "Vegkart",
+            display_text="Opne i Vegkart"
+        )
+    },
+    width="content"
+)
+
+st.dataframe(
+    styled_df_koll,
     column_config={
         "lenke": st.column_config.LinkColumn(
             "Vegkart",
