@@ -161,11 +161,11 @@ df_visning["lenke"] = (
 df_visning_koll["lenke"] = (
     "https://vegkart.atlas.vegvesen.no/#kartlag:geodata"
     "/@"
-    + df_visning["UTM33_øst_int_avg"].astype(str)
+    + df_visning_koll["UTM33_øst_int_avg"].astype(str)
     + ","
-    + df_visning["UTM_nord_int_avg"].astype(str)
+    + df_visning_koll["UTM_nord_int_avg"].astype(str)
     + ",10/valgt:"
-    + df_visning["Vegobjekt_540_id"].astype(str)
+    + df_visning_koll["Vegobjekt_540_id"].astype(str)
     + ":540"
 )
 
@@ -231,6 +231,14 @@ st.dataframe(
         )
     },
     width="content"
+)
+
+st.markdown(
+    f"""
+    **Viser topp {top_n} vegstrekningar**  
+    Sortert etter: **Antall kollisionar siste år**  
+    Dyrearter: **{", ".join(artsvalg)}**
+    """
 )
 
 st.dataframe(
