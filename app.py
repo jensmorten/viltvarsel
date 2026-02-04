@@ -216,7 +216,7 @@ styled_df = df_visning.style.format({
     "Lengde (m)": "{:.0f}",
 })
 
-styled_df_koll = styled_df_koll.style.format({
+styled_df_koll = df_visning_koll.style.format({
     metric_label: "{:.2E}",
     "ÅDT (Årsdøgntrafikk)": "{:.0f}",
     "Lengde (m)": "{:.0f}",
