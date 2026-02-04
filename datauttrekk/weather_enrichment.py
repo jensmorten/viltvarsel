@@ -60,7 +60,8 @@ OUT_COLS = [
     "max_wind_speed",
     "mean_wind_speed",
     "max_wind_gust",
-    "precipitation_type"
+    "precipitation_type",
+    "weather_station_id"  # <--- added
 ]
 
 # =======================
@@ -273,6 +274,7 @@ def get_daily_weather(lon, lat, date_iso):
     # Sikre alle felter + snødybde
     out = {k: p1d.get(k,"") for k in OUT_COLS if k!="snow_depth"}
     out["snow_depth"] = snow
+    out["weather_station_id"] = station_id  # <--- added
 
     with cache_lock:
         daily_cache[cache_key] = out
