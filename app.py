@@ -4,9 +4,10 @@ from datetime import date
 import numpy as np
 
 st.set_page_config(
-    page_title="Dyrepåkjørsler – risikostrekninger",
+    page_title="Dyrepåkøyrslar i Trøndelag  – risikostrekninger",
     layout="wide"
 )
+
 
 # --------------------------------------------------
 # Årstid frå dato
@@ -114,13 +115,13 @@ df_top_kollisjon = (
 # Hovudvisning
 # --------------------------------------------------
 
-st.title("🐾 Dyrepåkjørsler – farlege vegstrekningar")
+st.title("🐾 Dyrepåkøyrslar i Trøndelag")
 
 st.markdown(
     f"""
     **Viser topp {top_n} vegstrekningar**  
     Sortert etter: **{metric_label}**  
-    Dyrearter: **{", ".join(artsvalg)}**
+    Dyreartar: **{", ".join(artsvalg)}**
     """
 )
 
