@@ -199,7 +199,7 @@ df_visning = df_visning[
 ].copy()
 
 df_visning_koll = df_visning_koll[
-    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label, 'lenke','Samanlikning med risiko i yrke']
+    ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', 'lenke']
 ].copy()
 
 
