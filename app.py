@@ -236,9 +236,9 @@ st.dataframe(
 
 st.markdown(
     f"""
-    **Viser topp {top_n} vegstrekningar**  
-    Sortert etter: **Antall kollisionar siste år**  
-    Dyrearter: **{", ".join(artsvalg)}**
+    **Viser {top_n} vegstrekningar**  
+    Sortert etter: **Antal kollisionar siste år**  
+    Dyreartar: **{", ".join(artsvalg)}**
     """
 )
 
