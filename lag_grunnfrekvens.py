@@ -98,4 +98,5 @@ df["samanlikning_yrke"] = df["årsrisiko"].apply(
 )
 
 
-df.to_csv("frekvens_script.csv",encoding='utf-8', index=False)
+df.to_csv("data/frekvens_script.csv",encoding='utf-8', index=False)
+print(f"🎈 Hurra! {len(df)} grunnfrekvensar lagra to .csv-file")

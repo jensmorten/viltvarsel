@@ -1,5 +1,11 @@
-import pandas as pd
 
+from astral import LocationInfo
+from astral.sun import sun
+import pandas as pd
+from astral.sun import elevation
+import statsmodels.formula.api as smf
+import statsmodels.api as sm
+import numpy as np
 
 def map_arsrisiko_til_yrke(arsrisiko):
     """
@@ -9,13 +15,6 @@ def map_arsrisiko_til_yrke(arsrisiko):
     ----------
     arsrisiko : float
         Risiko per årsverk (f.eks. 0.012 = 12 per 1000)
-    yrkesdf : pandas.DataFrame
-        Må innehalde kolonnane:
-        - 'yrkesgruppe'
-        - 'intervall_lav'
-        - 'intervall_høg'
-
-    Returnerer
     ----------
     str : tekst for illustrativ samanlikning
     """
@@ -95,3 +94,87 @@ def map_arsrisiko_til_yrke(arsrisiko):
 
     # Fallback (burde eigentleg ikkje skje)
     return "Ukjend risikonivå"
+
+
+def lyskategori_fra_tidspunkt(ts):
+    TRONDELAG = LocationInfo(
+    name="Trøndelag",
+    region="Norway",
+    timezone="Europe/Oslo",
+    latitude=63.4,
+    longitude=10.4,
+    )
+    if pd.isna(ts):
+        return None
+
+    # Bruk solhøgde (grader over/under horisont)
+    solhoyde = elevation(TRONDELAG.observer, ts)
+    if solhoyde > 12:
+        return "Dag"
+    elif solhoyde >-12:
+        return "Skumring"
+    else:
+        return "Natt"
+    
+
+def maaned_til_arstid(m):
+    if m in [12, 1, 2]:
+        return "vinter"
+    elif m in [3, 4, 5]:
+        return "vår"
+    elif m in [6, 7, 8]:
+        return "sommar"
+    else:
+        return "haust"
+    
+
+def lag_arstidsjustering(model, referanse="haust"):
+    """
+    Lag justeringsfaktorar for årstid frå ein statsmodels GLM (NB / Poisson).
+
+    Referansekategori får faktor 1.0.
+    """
+    params = model.params
+
+    # Finn alle årstids-koeffisientar
+    arstid_params = {
+        k: v for k, v in params.items()
+        if k.startswith("C(årstid)")
+    }
+
+    # Referanse (den som ikkje er i params)
+    arstid_justering = {referanse: 1.0}
+
+    # Legg til dei estimerte årstidene
+    for k, beta in arstid_params.items():
+        # Trekk ut årstidsnamn, t.d. C(årstid)[T.Sommar] -> Sommar
+        arstid = k.split("[T.")[1].rstrip("]")
+        arstid_justering[arstid] = np.round(float(np.exp(beta)),2)
+
+    return arstid_justering
+
+def lag_lysjustering(model, referanse="Dag", damping=1, normaliser=False):
+    """
+    Lag justeringsfaktorar for lysforhold frå GLM,
+    med valfri damping for å unngå overtolking.
+    """
+
+    params = model.params
+    lys_justering = {referanse: 1.0}
+
+    for k, beta in params.items():
+        if k.startswith("C(lyskategori)[T."):
+            lys = k.split("[T.")[1].rstrip("]")
+            # Demp effekten
+            beta_dempet = damping * beta
+            lys_justering[lys] = np.round(float(np.exp(beta_dempet)))
+
+    if normaliser:
+        mean_factor = np.mean(list(lys_justering.values()))
+        lys_justering = {
+            k: v / mean_factor for k, v in lys_justering.items()
+        }
+
+    return lys_justering
+
+
