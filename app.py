@@ -38,9 +38,9 @@ ARSTID_JUSTERING = {
 DAGENS_ÅRSTID = finn_årstid(date.today())
 
 LYS_JUSTERING = {
-    'Dag': 1.0, 
-    'Natt': 1.09, 
-    'Skumring': 1.08}
+    'dag': 1.0, 
+    'natt': 1.09, 
+    'skumring': 1.08}
 
 def finn_lys(now):
     TRONDELAG = LocationInfo(
