@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from datetime import date
+from datetime import date, datetime
 import numpy as np
+from astral import LocationInfo
+from astral.sun import elevation
 
 st.set_page_config(
     page_title="Dyrepåkøyrslar i Trøndelag  – risikostrekninger",
@@ -27,12 +29,36 @@ def finn_årstid(dato):
 
 ARSTID_JUSTERING = {
     "Haust": 1.00,
-    "Vinter": 0.88,
-    "Vår": 0.65,
-    "Sommar": 0.57,
+    "Vinter": 0.98,
+    "Vår": 0.85,
+    "Sommar": 0.79,
 }
 
 DAGENS_ÅRSTID = finn_årstid(date.today())
+
+LYS_JUSTERING = {
+    'Dag': 1.0, 
+    'Natt': 1.09, 
+    'Skumring': 1.08}
+
+def finn_lys(now):
+    TRONDELAG = LocationInfo(
+    name="Trøndelag",
+    region="Norway",
+    timezone="Europe/Oslo",
+    latitude=63.4,
+    longitude=10.4,
+    )
+    solhoyde = elevation(TRONDELAG.observer, now)
+    if solhoyde > 12:
+        return "Dag"
+    elif solhoyde >-12:
+        return "Skumring"
+    else:
+        return "Natt"
+    
+LYSFORHOLD_NO = finn_lys(datetime.now()) 
+
 
 
 # --------------------------------------------------
@@ -237,7 +263,7 @@ st.dataframe(
 st.markdown(
     f"""
     **Viser {top_n} vegstrekningar**  
-    Sortert etter: **Antal kollisionar siste år**  
+    Sortert etter: **Antal kollisjonar siste år**  
     Dyreartar: **{", ".join(artsvalg)}**
     """
 )
