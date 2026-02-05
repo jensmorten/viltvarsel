@@ -146,12 +146,12 @@ df_top_kollisjon = (
 lokal_tid = datetime.now(ZoneInfo("Europe/Oslo"))
 
 local_tid_str=lokal_tid.strftime('%Y-%m-%d %H:%M')
-tidssone = datetime.now(ZoneInfo("Europe/Oslo")).tzname()
+#tidssone = datetime.now(ZoneInfo("Europe/Oslo")).tzname()
 
-st.title("🐾 Dyrepåkøyrslar i Trøndelag")
+st.title("🫎⚠️ Dyrepåkøyrslar i Trøndelag")
 
 if metric_choice=="Predikert frekvens":
-    txt= f"ℹ️ Justering av frekvens er aktiv. Lokal dato og tid er {local_tid_str} i tidssone {tidssone}, justering for årstid **{DAGENS_ÅRSTID}** og lysforhold **{LYSFORHOLD_NO}** er aktiv"
+    txt= f"ℹ️ Justering av frekvens er aktiv. Lokal dato og tid er {local_tid_str}, justering for årstid **{DAGENS_ÅRSTID}** og lysforhold **{LYSFORHOLD_NO}** er aktiv"
 else:
     txt = ""
 print(datetime.now(ZoneInfo("Europe/Oslo")).tzname())
@@ -161,7 +161,7 @@ st.markdown(
     f"""
     **Viser topp {top_n} vegstrekningar**  
     Sortert etter: **{metric_label}**  
-    Dyreartar: **{", ".join(artsvalg)}**
+    Dyreartar: **{", ".join(artsvalg)}** \n
     {txt}
     """
 )
