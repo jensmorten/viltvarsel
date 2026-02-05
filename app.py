@@ -272,7 +272,8 @@ st.dataframe(
             display_text="Opne i Vegkart"
         )
     },
-    width="content"
+    width="content",
+    hide_index=True
 )
 
 st.markdown(
@@ -291,7 +292,8 @@ st.dataframe(
             display_text="Opne i Vegkart"
         )
     },
-    width="content"
+    width="content",
+    hide_index=True
 )
 
 
