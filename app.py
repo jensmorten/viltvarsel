@@ -19,13 +19,13 @@ st.set_page_config(
 def finn_årstid(dato):
     m = dato.month
     if m in (12, 1, 2):
-        return "Vinter"
+        return "vinter"
     elif m in (3, 4, 5):
-        return "Vår"
+        return "vår"
     elif m in (6, 7, 8):
-        return "Sommar"
+        return "sommar"
     else:
-        return "Haust"
+        return "haust"
 
 
 ARSTID_JUSTERING = {
