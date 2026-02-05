@@ -146,12 +146,13 @@ df_top_kollisjon = (
 lokal_tid = datetime.now(ZoneInfo("Europe/Oslo"))
 
 local_tid_str=lokal_tid.strftime('%Y-%m-%d %H:%M')
-#tidssone = datetime.now(ZoneInfo("Europe/Oslo")).tzname()
 
 st.title("🫎⚠️ Dyrepåkøyrslar i Trøndelag")
 
+faktor= np.roun(ARSTID_JUSTERING[DAGENS_ÅRSTID] * LYS_JUSTERING[LYSFORHOLD_NO],2)
+
 if metric_choice=="Predikert frekvens":
-    txt= f"ℹ️ Justering av frekvens er aktiv. Lokal dato og tid er {local_tid_str}, justering for årstid **{DAGENS_ÅRSTID}** og lysforhold **{LYSFORHOLD_NO}** er aktiv"
+    txt= f"ℹ️ Justering av frekvens er aktiv. Lokal dato og tid er {local_tid_str}, årstid **{DAGENS_ÅRSTID}** og lysforhold **{LYSFORHOLD_NO}** gir total justeringfaktor på {faktor}"
 else:
     txt = ""
 print(datetime.now(ZoneInfo("Europe/Oslo")).tzname())
