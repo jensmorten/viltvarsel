@@ -4,6 +4,7 @@ from datetime import date, datetime
 import numpy as np
 from astral import LocationInfo
 from astral.sun import elevation
+from zoneinfo import ZoneInfo
 
 st.set_page_config(
     page_title="Dyrepåkøyrslar i Trøndelag  – risikostrekninger",
@@ -28,10 +29,10 @@ def finn_årstid(dato):
 
 
 ARSTID_JUSTERING = {
-    "Haust": 1.00,
-    "Vinter": 0.98,
-    "Vår": 0.85,
-    "Sommar": 0.79,
+    "haust": 1.00,
+    "vinter": 0.98,
+    "vår": 0.85,
+    "sommar": 0.79,
 }
 
 DAGENS_ÅRSTID = finn_årstid(date.today())
@@ -51,13 +52,13 @@ def finn_lys(now):
     )
     solhoyde = elevation(TRONDELAG.observer, now)
     if solhoyde > 12:
-        return "Dag"
+        return "dag"
     elif solhoyde >-12:
-        return "Skumring"
+        return "skumring"
     else:
-        return "Natt"
+        return "natt"
     
-LYSFORHOLD_NO = finn_lys(datetime.now()) 
+LYSFORHOLD_NO = finn_lys(datetime.now(ZoneInfo("Europe/Oslo"))) 
 
 
 
@@ -156,7 +157,7 @@ st.markdown(
     **Viser topp {top_n} vegstrekningar**  
     Sortert etter: **{metric_label}**  
     Dyreartar: **{", ".join(artsvalg)}**
-    + {txt}
+    + ℹ️ {txt}
     """
 )
 
