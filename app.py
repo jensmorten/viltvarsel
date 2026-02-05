@@ -115,6 +115,7 @@ df_filt = df[df["Art"].isin(artsvalg)].copy()
 df_filt["predikert_risiko"] = (
     df_filt["frekvens"]
     * ARSTID_JUSTERING[DAGENS_ÅRSTID]
+    * LYS_JUSTERING[LYSFORHOLD_NO]
 )
 
 if metric_choice == "Historisk frekvens":
@@ -143,11 +144,19 @@ df_top_kollisjon = (
 
 st.title("🐾 Dyrepåkøyrslar i Trøndelag")
 
+if metric_choice=="Predikert frekvens":
+    txt= f"Justering av frekvens er aktiv. Lokal dato og tid er {datetime.now()}, justering for årstid **{DAGENS_ÅRSTID}** og lysforhold {LYSFORHOLD_NO} er aktiv"
+else:
+    txt = ""
+
+
+
 st.markdown(
     f"""
     **Viser topp {top_n} vegstrekningar**  
     Sortert etter: **{metric_label}**  
     Dyreartar: **{", ".join(artsvalg)}**
+    + {txt}
     """
 )
 
