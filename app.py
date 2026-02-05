@@ -58,7 +58,7 @@ def finn_lys(now):
     else:
         return "natt"
     
-LYSFORHOLD_NO = finn_lys(datetime.now(ZoneInfo("Europe/Oslo"))) 
+LYSFORHOLD_NO = finn_lys(datetime.now(tz=ZoneInfo("Europe/Oslo"))) 
 
 
 
@@ -143,13 +143,18 @@ df_top_kollisjon = (
 # Hovudvisning
 # --------------------------------------------------
 
+lokal_tid = datetime.now(ZoneInfo("Europe/Oslo"))
+
+local_tid_str=lokal_tid.strftime('%Y-%m-%d %H:%M')
+tidssone = datetime.now(ZoneInfo("Europe/Oslo")).tzname()
+
 st.title("🐾 Dyrepåkøyrslar i Trøndelag")
 
 if metric_choice=="Predikert frekvens":
-    txt= f"Justering av frekvens er aktiv. Lokal dato og tid er {datetime.now()}, justering for årstid **{DAGENS_ÅRSTID}** og lysforhold {LYSFORHOLD_NO} er aktiv"
+    txt= f"ℹ️ Justering av frekvens er aktiv. Lokal dato og tid er {local_tid_str} i tidssone {tidssone}, justering for årstid **{DAGENS_ÅRSTID}** og lysforhold **{LYSFORHOLD_NO}** er aktiv"
 else:
     txt = ""
-
+print(datetime.now(ZoneInfo("Europe/Oslo")).tzname())
 
 
 st.markdown(
@@ -157,7 +162,7 @@ st.markdown(
     **Viser topp {top_n} vegstrekningar**  
     Sortert etter: **{metric_label}**  
     Dyreartar: **{", ".join(artsvalg)}**
-    + ℹ️ {txt}
+    {txt}
     """
 )
 
