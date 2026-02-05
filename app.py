@@ -314,12 +314,9 @@ with st.expander("ℹ️ Om tala"):
         For å gi eit meir intuitivt risikobilete er frekvensen omrekna til
         årleg risiko per bil, basert på ein føresetnad om årleg køyrelengd på 15000 km og at ein kollisjon i snitt gir same konsekvens som ei arbeidslulukke.
         Denne årsrisikoen blir samanlikna med melde arbeidsulukker
-        (med fråver) per årsverk i ulike yrke (tal og kategoriar frå SSB). Så kolonna betyr "å kjøre 15000 km på denne strekninga vil gi om lag same risiko som å jobbe eit årsverk i dette yrket". 
+        (med fråver) per årsverk i ulike yrke (tal og kategoriar frå SSB). Så kolonna betyr "å kjøre 15000 km på denne strekninga vil gi om lag same risiko som å jobbe eit årsverk i dette yrket". Samanlikninga er meint som ei grovt illustrativ skala basert på desse føresetnadane. 
 
-        Samanlikninga er meint som ei **grovt illustrativ skala** basert på desse føresetnadane. 
-
-        Predikert risiko  
-        = historisk grunnfrekvens justert med ein årstidsfaktor, estimert frå ein statistisk modell
+        Predikert frekvens er historisk grunnfrekvens justert med ein årstidsfaktor og faktor for lysforhald, estimert frå ein statistisk modell
         (Negativ binomial-regresjon) basert på observerte dyrepåkjørsler.
         """
     )
