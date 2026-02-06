@@ -306,6 +306,9 @@ st.dataframe(
 )
 
 
+if "kart" not in st.session_state:
+    st.session_state.kart = None
+
 if st.button("Vis kart"):
     with st.spinner("Hentar veggeometri frå NVDB …"):
         veg_ids = (
@@ -316,12 +319,11 @@ if st.button("Vis kart"):
         )
 
         wkt_dict = asyncio.run(hent_alle_wkt(veg_ids))
-        kart = lag_felles_kart(wkt_dict)
+        st.session_state.kart = lag_felles_kart(wkt_dict)
 
-    if kart:
-        st_folium(kart, width=1200, height=650)
-    else:
-        st.warning("Ingen kartdata kunne visast.")
+# Vis kartet dersom det finst
+if st.session_state.kart:
+    st_folium(st.session_state.kart, width=1200, height=650)
 
 
 # --------------------------------------------------
