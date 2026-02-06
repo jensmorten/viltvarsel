@@ -5,6 +5,12 @@ import numpy as np
 from astral import LocationInfo
 from astral.sun import elevation
 from zoneinfo import ZoneInfo
+import asyncio
+
+from functions import (
+    hent_alle_wkt,
+    lag_felles_kart
+)
 
 st.set_page_config(
     page_title="Dyrepåkøyrslar i Trøndelag  – risikostrekninger",
@@ -296,6 +302,24 @@ st.dataframe(
     width="content",
     hide_index=True
 )
+
+
+if st.button("Vis kart"):
+    with st.spinner("Hentar veggeometri frå NVDB …"):
+        veg_ids = (
+            df_visning["Vegobjekt_540_id"]
+            .dropna()
+            .astype(str)
+            .tolist()
+        )
+
+        wkt_dict = asyncio.run(hent_alle_wkt(veg_ids))
+        kart = lag_felles_kart(wkt_dict)
+
+    if kart:
+        st_folium(kart, width=1200, height=650)
+    else:
+        st.warning("Ingen kartdata kunne visast.")
 
 
 # --------------------------------------------------

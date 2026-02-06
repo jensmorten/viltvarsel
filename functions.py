@@ -6,6 +6,12 @@ from astral.sun import elevation
 import statsmodels.formula.api as smf
 import statsmodels.api as sm
 import numpy as np
+from streamlit_folium import st_folium
+from pyproj import Transformer
+import branca.colormap as cm
+import asyncio
+import httpx
+from typing import Optional, Dict
 
 def map_arsrisiko_til_yrke(arsrisiko):
     """
@@ -177,4 +183,140 @@ def lag_lysjustering(model, referanse="Dag", damping=1, normaliser=False):
 
     return lys_justering
 
+# Felles NVDB-headers
+headers = {
+    "Accept": "application/json",
+    "User-Agent": "nvdb-wkt-fetcher/1.0",
+    "X-Client": "nvdb-wkt-fetcher",
+}
 
+# --- Konfigurasjon ---
+vegobjekt_540_id = 1024046936
+
+# Sett kilde-CRS her: UTM sone 33N (Trøndelag). Om nødvendig, bytt til 32632.
+src_epsg = 32633
+
+# Konstanter
+VEGOBJEKT_TYPE_ID = 540
+REQUEST_TIMEOUT = 20.0
+RETRY_BACKOFF = [0.5, 1.0, 2.0]
+MAX_CONCURRENCY = 16
+
+sem = asyncio.Semaphore(MAX_CONCURRENCY)
+
+# Cache: objekt_id -> wkt-streng
+wkt_cache: Dict[str, str] = {}
+
+def parse_linestring_wkt(wkt_text):
+    w = wkt_text.strip()
+    # Finn innholdet innenfor første par med parenteser
+    start = w.find('(')
+    end = w.rfind(')')
+    if start == -1 or end == -1:
+        raise ValueError("Ugyldig WKT: mangler parenteser")
+    body = w[start+1:end].strip()
+
+    coords = []
+    for part in body.split(','):
+        nums = part.strip().split()
+        if len(nums) < 2:
+            continue
+        x = float(nums[0]); y = float(nums[1])
+        z = float(nums[2]) if len(nums) >= 3 else None
+        coords.append((x, y, z))
+    return coords
+
+async def hent_wkt_for_objekt(client: httpx.AsyncClient, objekt_id: str) -> str:
+    """
+    Henter WKT-geometri for et vegobjekt (type 540) fra NVDB API LES.
+    Returnerer tom streng dersom data mangler eller ikke finnes.
+    """
+    if not objekt_id:
+        return ""
+
+    if objekt_id in wkt_cache:
+        return wkt_cache[objekt_id]
+
+    url = f"https://nvdbapiles.atlas.vegvesen.no/vegobjekter/{VEGOBJEKT_TYPE_ID}/{objekt_id}"
+
+    attempts = len(RETRY_BACKOFF) + 1
+
+    for i in range(attempts):
+        try:
+            async with sem:
+                resp = await client.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+
+            if resp.status_code == 200:
+                data = resp.json()
+
+                # Primært: geometri.wkt (øverst i JSON)
+                geom = data.get("geometri", {})
+                wkt = geom.get("wkt")
+
+                # Sekundært fallback: lokasjon.geometri.wkt
+                if not wkt:
+                    lok = data.get("lokasjon", {})
+                    lok_geom = lok.get("geometri", {})
+                    wkt = lok_geom.get("wkt", "")
+
+                wkt = wkt or ""
+                wkt_cache[objekt_id] = wkt
+                return wkt
+
+            elif 500 <= resp.status_code < 600:
+                if i < attempts - 1:
+                    await asyncio.sleep(RETRY_BACKOFF[i])
+                    continue
+                else:
+                    return ""
+            else:
+                return ""
+
+        except (httpx.HTTPError, asyncio.TimeoutError):
+            if i < attempts - 1:
+                await asyncio.sleep(RETRY_BACKOFF[i])
+                continue
+            return ""
+
+    return ""
+
+def lag_felles_kart(wkt_dict, src_epsg=32633):
+    transformer = Transformer.from_crs(src_epsg, 4326, always_xy=True)
+
+    alle_punkt = []
+    m = None
+
+    for veg_id, wkt in wkt_dict.items():
+        if not wkt:
+            continue
+
+        pts_xyz = parse_linestring_wkt(wkt)
+        lonlat = [transformer.transform(x, y) for (x, y, _) in pts_xyz]
+        latlon = [(lat, lon) for (lon, lat) in lonlat]
+
+        alle_punkt.extend(latlon)
+
+        if m is None:
+            m = folium.Map(location=latlon[len(latlon)//2], zoom_start=10)
+
+        folium.PolyLine(
+            latlon,
+            weight=4,
+            opacity=0.8,
+            tooltip=f"Veg_ID {veg_id}"
+        ).add_to(m)
+
+    if m and alle_punkt:
+        m.fit_bounds(alle_punkt)
+
+    return m
+
+async def hent_alle_wkt(veg_ids):
+    async with httpx.AsyncClient() as client:
+        tasks = [
+            hent_wkt_for_objekt(client, str(vid))
+            for vid in veg_ids
+        ]
+        wkts = await asyncio.gather(*tasks)
+
+    return dict(zip(veg_ids, wkts))
