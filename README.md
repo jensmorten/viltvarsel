@@ -18,22 +18,10 @@ I staden for å telje absolute tal på påkjørsler, blir risikoen normalisert f
 Kjernen i modellen er ein grunnfrekvens per vegstrekning, definert som:
 
 forventa tal på dyrepåkjørsler per 100 køyretøykilometer per år
-
+ 
 Dette blir berekna som:
 
-$$
-\text{frekvens}
-=
-\frac{
-  \text{antall kollisjonar}
-}{
-  \text{ÅDT}
-  \times 365
-  \times \text{veglengd (km)}
-}
-\times 100
-$$
-
+$\text{frekvens} = \frac{\text{antall kollisjonar}}{\text{ÅDT} \times 365 \times \text{veglengd}}$
 
 Grunnfrekvensen:
 
@@ -61,7 +49,7 @@ normaliserte (gjennomsnitt = 1)
 
 meint for samanlikning, ikkje absolutte prognosar
 
-☀️ Lysforhold (på veg inn)
+☀️ Lysforhold
 
 Prosjektet utforskar bruk av solhøgde (grader) som kontinuerleg forklaringsvariabel i staden for grove kategoriar som «dag/natt».
 
