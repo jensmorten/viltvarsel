@@ -321,6 +321,28 @@ def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
             tooltip=f"Veg_ID {veg_id}<br>Risiko: {risiko:.2E}"
         ).add_to(m)
 
+        # Legg på Veg_ID som tekst på kartet (midt på strekninga)
+        mid_idx = len(latlon) // 2
+        folium.Marker(
+        location=latlon[mid_idx],
+        icon=folium.DivIcon(
+        html=f"""
+        <div style="
+            font-size: 11px;
+            color: black;
+            background-color: rgba(255,255,255,0.8);
+            padding: 2px 4px;
+            border-radius: 4px;
+            border: 1px solid #999;
+            white-space: nowrap;
+        ">
+            {veg_id}
+        </div>
+        """
+    )
+    ).add_to(m)
+
+
     if m and alle_punkt:
         m.fit_bounds(alle_punkt)
         cmap.add_to(m)
