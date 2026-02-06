@@ -4,3 +4,6 @@ pyarrow>=14.0
 numpy>=1.24
 astral>=3.2
 streamlit-folium
+folium
+httpx
+pyproj
