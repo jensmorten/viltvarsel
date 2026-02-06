@@ -340,7 +340,7 @@ if st.button("Vis kart"):
 
 # Vis kartet dersom det finst
 if st.session_state.kart:
-    st_folium(st.session_state.kart, width=1800, height=1200)
+    st_folium(st.session_state.kart, idth=1200, height=650)
 
 
 # --------------------------------------------------
