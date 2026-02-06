@@ -333,9 +333,12 @@ if st.button("Vis kart"):
             )
         )
 
-        st.session_state.kart = lag_felles_kart(
-            wkt_dict,
-            risiko_dict
+        st_folium(
+            st.session_state.kart,
+            width=1200,
+            height=650,
+            returned_objects=[],
+            key="kart"
         )
 
 # Vis kartet dersom det finst
