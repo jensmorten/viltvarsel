@@ -282,75 +282,65 @@ async def hent_wkt_for_objekt(client: httpx.AsyncClient, objekt_id: str) -> str:
     return ""
 
 def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
+    """
+    Lag enkelt Folium-kart med vegstrekningar farga etter risiko.
+    Stabil versjon utan labels / DivIcon.
+    """
+
     transformer = Transformer.from_crs(src_epsg, 4326, always_xy=True)
 
+    # Finn min/max risiko for fargeskala
     risikoar = [v for v in risiko_dict.values() if v is not None]
+    if not risikoar:
+        return None
+
     vmin, vmax = min(risikoar), max(risikoar)
 
     cmap = cm.LinearColormap(
         colors=["#2c7bb6", "#ffffbf", "#d7191c"],
         vmin=vmin,
-        vmax=vmax,
+        vmax=vmax
     )
     cmap.caption = "Risiko (frekvens)"
 
     m = None
     alle_punkt = []
 
-    veglinjer = folium.FeatureGroup(name="Vegstrekningar")
-    id_labels = folium.FeatureGroup(name="Veg-ID")
-
     for veg_id, wkt in wkt_dict.items():
         if not wkt:
             continue
 
+        # Parse og transformer geometri
         pts_xyz = parse_linestring_wkt(wkt)
         lonlat = [transformer.transform(x, y) for (x, y, _) in pts_xyz]
         latlon = [(lat, lon) for (lon, lat) in lonlat]
+
+        if not latlon:
+            continue
+
         alle_punkt.extend(latlon)
 
         risiko = risiko_dict.get(veg_id)
         color = cmap(risiko) if risiko is not None else "gray"
 
         if m is None:
-            m = folium.Map(location=latlon[len(latlon)//2], zoom_start=10)
+            m = folium.Map(
+                location=latlon[len(latlon) // 2],
+                zoom_start=10,
+                tiles="OpenStreetMap"
+            )
 
-        # Veglinje
         folium.PolyLine(
             latlon,
             color=color,
             weight=5,
             opacity=0.9,
             tooltip=f"Veg_ID {veg_id}<br>Risiko: {risiko:.2E}"
-        ).add_to(veglinjer)
-
-        # ID-etikett
-        mid_idx = len(latlon) // 2
-        folium.Marker(
-            location=latlon[mid_idx],
-            icon=folium.DivIcon(
-                html=f"""
-                <div style="
-                    font-size: 11px;
-                    color: black;
-                    background-color: rgba(255,255,255,0.8);
-                    padding: 2px 4px;
-                    border-radius: 4px;
-                    border: 1px solid #999;
-                    white-space: nowrap;
-                ">
-                    {veg_id}
-                </div>
-                """
-            )
-        ).add_to(id_labels)
+        ).add_to(m)
 
     if m and alle_punkt:
-        veglinjer.add_to(m)
-        id_labels.add_to(m)
-        cmap.add_to(m)
         m.fit_bounds(alle_punkt)
-        folium.LayerControl(collapsed=False).add_to(m)
+        cmap.add_to(m)
 
     return m
 
