@@ -11,6 +11,7 @@ from pyproj import Transformer
 import branca.colormap as cm
 import asyncio
 import httpx
+import folium   # ← DENNE mangla
 from typing import Optional, Dict
 
 def map_arsrisiko_til_yrke(arsrisiko):
