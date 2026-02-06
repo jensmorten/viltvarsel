@@ -347,7 +347,8 @@ if st.button("Vis kart"):
 if st.session_state.kart is not None:
     html(
         st.session_state.kart.get_root().render(),
-        height=650
+        height=1200,
+        width=1800
     )
 # --------------------------------------------------
 # Enkel forklaring
