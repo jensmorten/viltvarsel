@@ -284,7 +284,6 @@ async def hent_wkt_for_objekt(client: httpx.AsyncClient, objekt_id: str) -> str:
 def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
     transformer = Transformer.from_crs(src_epsg, 4326, always_xy=True)
 
-    # Finn min / max risiko for fargeskala
     risikoar = [v for v in risiko_dict.values() if v is not None]
     vmin, vmax = min(risikoar), max(risikoar)
 
@@ -297,6 +296,9 @@ def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
 
     m = None
     alle_punkt = []
+
+    veglinjer = folium.FeatureGroup(name="Vegstrekningar")
+    id_labels = folium.FeatureGroup(name="Veg-ID")
 
     for veg_id, wkt in wkt_dict.items():
         if not wkt:
@@ -313,42 +315,44 @@ def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
         if m is None:
             m = folium.Map(location=latlon[len(latlon)//2], zoom_start=10)
 
+        # Veglinje
         folium.PolyLine(
             latlon,
             color=color,
             weight=5,
             opacity=0.9,
             tooltip=f"Veg_ID {veg_id}<br>Risiko: {risiko:.2E}"
-        ).add_to(m)
+        ).add_to(veglinjer)
 
-        # Legg på Veg_ID som tekst på kartet (midt på strekninga)
+        # ID-etikett
         mid_idx = len(latlon) // 2
         folium.Marker(
-        location=latlon[mid_idx],
-        icon=folium.DivIcon(
-        html=f"""
-        <div style="
-            font-size: 11px;
-            color: black;
-            background-color: rgba(255,255,255,0.8);
-            padding: 2px 4px;
-            border-radius: 4px;
-            border: 1px solid #999;
-            white-space: nowrap;
-        ">
-            {veg_id}
-        </div>
-        """
-    )
-    ).add_to(m)
-
+            location=latlon[mid_idx],
+            icon=folium.DivIcon(
+                html=f"""
+                <div style="
+                    font-size: 11px;
+                    color: black;
+                    background-color: rgba(255,255,255,0.8);
+                    padding: 2px 4px;
+                    border-radius: 4px;
+                    border: 1px solid #999;
+                    white-space: nowrap;
+                ">
+                    {veg_id}
+                </div>
+                """
+            )
+        ).add_to(id_labels)
 
     if m and alle_punkt:
-        m.fit_bounds(alle_punkt)
+        veglinjer.add_to(m)
+        id_labels.add_to(m)
         cmap.add_to(m)
+        m.fit_bounds(alle_punkt)
+        folium.LayerControl(collapsed=False).add_to(m)
 
     return m
-
 
 async def hent_alle_wkt(veg_ids):
     async with httpx.AsyncClient() as client:
