@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 import asyncio
 from streamlit_folium import st_folium
 import folium
+from streamlit.components.v1 import html
 
 from functions import (
     hent_alle_wkt,
