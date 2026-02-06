@@ -21,26 +21,19 @@ forventa tal på dyrepåkjørsler per 100 køyretøykilometer per år
 
 Dette blir berekna som:
 
-frekvens
+$$
+\text{frekvens}
 =
-antall kollisjonar
-A
-˚
-DT
-×
-365
-×
-veglengd (m)
-×
-100000
-frekvens=
-A
-˚
-DT×365×veglengd (m)
-antall kollisjonar
-	​
+\frac{
+  \text{antall kollisjonar}
+}{
+  \text{ÅDT}
+  \times 365
+  \times \text{veglengd (km)}
+}
+\times 100
+$$
 
-×100
 
 Grunnfrekvensen:
 
