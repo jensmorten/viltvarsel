@@ -3,8 +3,8 @@ from astral import LocationInfo
 from astral.sun import sun
 import pandas as pd
 from astral.sun import elevation
-import statsmodels.formula.api as smf
-import statsmodels.api as sm
+#import statsmodels.formula.api as smf
+#import statsmodels.api as sm
 import numpy as np
 from streamlit_folium import st_folium
 from pyproj import Transformer
