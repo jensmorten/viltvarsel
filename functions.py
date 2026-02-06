@@ -6,7 +6,7 @@ from astral.sun import elevation
 #import statsmodels.formula.api as smf
 #import statsmodels.api as sm
 import numpy as np
-from streamlit_folium import st_folium
+#from streamlit_folium import st_folium
 from pyproj import Transformer
 import branca.colormap as cm
 import asyncio
