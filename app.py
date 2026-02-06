@@ -305,6 +305,12 @@ st.dataframe(
     hide_index=True
 )
 
+risiko_dict = dict(
+    zip(
+        df_visning["Veg_ID"].astype(str),
+        df_visning[metric_label]
+    )
+)
 
 if "kart" not in st.session_state:
     st.session_state.kart = None
@@ -319,7 +325,18 @@ if st.button("Vis kart"):
         )
 
         wkt_dict = asyncio.run(hent_alle_wkt(veg_ids))
-        st.session_state.kart = lag_felles_kart(wkt_dict)
+
+        risiko_dict = dict(
+            zip(
+                df_visning["Veg_ID"].astype(str),
+                df_visning[metric_label]
+            )
+        )
+
+        st.session_state.kart = lag_felles_kart(
+            wkt_dict,
+            risiko_dict
+        )
 
 # Vis kartet dersom det finst
 if st.session_state.kart:

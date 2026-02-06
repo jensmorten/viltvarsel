@@ -281,11 +281,22 @@ async def hent_wkt_for_objekt(client: httpx.AsyncClient, objekt_id: str) -> str:
 
     return ""
 
-def lag_felles_kart(wkt_dict, src_epsg=32633):
+def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
     transformer = Transformer.from_crs(src_epsg, 4326, always_xy=True)
 
-    alle_punkt = []
+    # Finn min / max risiko for fargeskala
+    risikoar = [v for v in risiko_dict.values() if v is not None]
+    vmin, vmax = min(risikoar), max(risikoar)
+
+    cmap = cm.LinearColormap(
+        colors=["#2c7bb6", "#ffffbf", "#d7191c"],
+        vmin=vmin,
+        vmax=vmax,
+    )
+    cmap.caption = "Risiko (frekvens)"
+
     m = None
+    alle_punkt = []
 
     for veg_id, wkt in wkt_dict.items():
         if not wkt:
@@ -294,23 +305,28 @@ def lag_felles_kart(wkt_dict, src_epsg=32633):
         pts_xyz = parse_linestring_wkt(wkt)
         lonlat = [transformer.transform(x, y) for (x, y, _) in pts_xyz]
         latlon = [(lat, lon) for (lon, lat) in lonlat]
-
         alle_punkt.extend(latlon)
+
+        risiko = risiko_dict.get(veg_id)
+        color = cmap(risiko) if risiko is not None else "gray"
 
         if m is None:
             m = folium.Map(location=latlon[len(latlon)//2], zoom_start=10)
 
         folium.PolyLine(
             latlon,
-            weight=4,
-            opacity=0.8,
-            tooltip=f"Veg_ID {veg_id}"
+            color=color,
+            weight=5,
+            opacity=0.9,
+            tooltip=f"Veg_ID {veg_id}<br>Risiko: {risiko:.2E}"
         ).add_to(m)
 
     if m and alle_punkt:
         m.fit_bounds(alle_punkt)
+        cmap.add_to(m)
 
     return m
+
 
 async def hent_alle_wkt(veg_ids):
     async with httpx.AsyncClient() as client:
