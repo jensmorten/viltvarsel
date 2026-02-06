@@ -312,9 +312,11 @@ risiko_dict = dict(
     )
 )
 
+# Initier kart i session_state
 if "kart" not in st.session_state:
     st.session_state.kart = None
 
+# Knapp: lag kartet
 if st.button("Vis kart"):
     with st.spinner("Hentar veggeometri frå NVDB …"):
         veg_ids = (
@@ -333,23 +335,19 @@ if st.button("Vis kart"):
             )
         )
 
-        st_folium(
-            st.session_state.kart,
-            width=1200,
-            height=650,
-            returned_objects=[],
-            key="kart"
+        # LAG kartet og lagre i session_state
+        st.session_state.kart = lag_felles_kart(
+            wkt_dict,
+            risiko_dict
         )
 
 # Vis kartet dersom det finst
-if st.session_state.kart:
-    if st.session_state.kart is not None:
-        html(
-            st.session_state.kart.get_root().render(),
+# Vis kartet dersom det finst
+if st.session_state.kart is not None:
+    html(
+        st.session_state.kart.get_root().render(),
         height=650
     )
-
-
 # --------------------------------------------------
 # Enkel forklaring
 # --------------------------------------------------
