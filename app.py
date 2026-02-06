@@ -343,7 +343,11 @@ if st.button("Vis kart"):
 
 # Vis kartet dersom det finst
 if st.session_state.kart:
-    st_folium(st.session_state.kart, width=1200, height=650)
+    if st.session_state.kart is not None:
+        html(
+            st.session_state.kart.get_root().render(),
+        height=650
+    )
 
 
 # --------------------------------------------------

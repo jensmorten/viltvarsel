@@ -13,6 +13,8 @@ import asyncio
 import httpx
 import folium   # ← DENNE mangla
 from typing import Optional, Dict
+from streamlit.components.v1 import html
+
 
 def map_arsrisiko_til_yrke(arsrisiko):
     """
