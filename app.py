@@ -6,6 +6,7 @@ from astral import LocationInfo
 from astral.sun import elevation
 from zoneinfo import ZoneInfo
 import asyncio
+from streamlit_folium import st_folium
 
 from functions import (
     hent_alle_wkt,
@@ -307,7 +308,7 @@ st.dataframe(
 if st.button("Vis kart"):
     with st.spinner("Hentar veggeometri frå NVDB …"):
         veg_ids = (
-            df_visning["Vegobjekt_540_id"]
+            df_visning["Veg_ID"]
             .dropna()
             .astype(str)
             .tolist()
