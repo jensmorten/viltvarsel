@@ -86,14 +86,6 @@ df = load_data()
 # Sidebar – brukarval
 # --------------------------------------------------
 
-st.sidebar.title("Navigasjon")
-st.sidebar.markdown(
-    """
-    👉 Vel side i menyen over  
-    - **Hovudside**: topp strekningar  
-    - **Risikokart**: utforsk risiko etter art, årstid og lys
-    """
-)
 
 st.sidebar.title("Innstillinger")
 
