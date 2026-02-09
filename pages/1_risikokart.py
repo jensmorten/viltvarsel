@@ -103,7 +103,7 @@ st.markdown(
 # Klargjer kartdata
 # --------------------------------------------------
 
-veg_ids = df_risiko["Vegobjekt_540_id"].astype(int).astype(str).tolist()
+veg_ids = df_risiko["Vegobjekt_540_id"].astype("Int64").astype(str).tolist()
 
 if not veg_ids:
     st.warning("Ingen vegstrekningar å vise på kartet.")
