@@ -105,6 +105,8 @@ st.markdown(
 
 veg_ids = df_risiko["Vegobjekt_540_id"].astype(str).tolist()
 
+print(veg_ids)
+
 if not veg_ids:
     st.warning("Ingen vegstrekningar å vise på kartet.")
     st.stop()
