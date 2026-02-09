@@ -147,6 +147,14 @@ df_top_kollisjon = (
     .head(top_n)
 )
 
+df_top_sum = df_filt
+df_top_sum[metric_col]=df_top_sum.groupby('Vegobjekt_540_id')[metric_col].sum()
+df_top_sum = (
+    df_top_sum
+    .sort_values(metric_col, ascending=False)
+    .head(top_n)
+)
+
 
 # --------------------------------------------------
 # Hovudvisning
@@ -178,7 +186,7 @@ st.markdown(
 
 df_visning = df_top.copy()
 df_visning_koll = df_top_kollisjon.copy()
-
+df_visning_sum = df_top_sum.copy()
 
 # -----------------------------
 # Rydd datatypar for visning
@@ -186,14 +194,15 @@ df_visning_koll = df_top_kollisjon.copy()
 
 df_visning["Vegobjekt_540_id"] = df_visning["Vegobjekt_540_id"].astype("Int64")
 df_visning_koll["Vegobjekt_540_id"] = df_visning_koll["Vegobjekt_540_id"].astype("Int64")
-
+df_visning_sum["Vegobjekt_540_id"] = df_visning_koll["Vegobjekt_540_id"].astype("Int64")
 
 df_visning["Ådt_avg"] = df_visning["ÅDT, total_avg"].astype("Int64")
 df_visning_koll["Ådt_avg"] = df_visning_koll["ÅDT, total_avg"].astype("Int64")
+df_visning_sum["Ådt_avg"] = df_visning_sum["ÅDT, total_avg"].astype("Int64")
 
 df_visning["Vegobjekt_540_lengde"] = df_visning["Vegobjekt_540_lengde_avg"].astype("Int64")
 df_visning_koll["Vegobjekt_540_lengde"] = df_visning_koll["Vegobjekt_540_lengde_avg"].astype("Int64")
-
+df_visning_sum["Vegobjekt_540_lengde"] = df_visning_sum["Vegobjekt_540_lengde_avg"].astype("Int64")
 
 # -----------------------------
 # Lag Vegkart-lenke
@@ -221,6 +230,18 @@ df_visning_koll["lenke"] = (
     + ":540"
 )
 
+df_visning_sum["lenke"] = (
+    "https://vegkart.atlas.vegvesen.no/#kartlag:geodata"
+    "/@"
+    + df_visning_sum["UTM33_øst_int_avg"].astype(str)
+    + ","
+    + df_visning_sum["UTM_nord_int_avg"].astype(str)
+    + ",10/valgt:"
+    + df_visning_sum["Vegobjekt_540_id"].astype(str)
+    + ":540"
+)
+
+
 # -----------------------------
 # Gi pene kolonnenamn
 # -----------------------------
@@ -243,6 +264,16 @@ df_visning_koll = df_visning_koll.rename(columns={
     metric_col: metric_label
 }).copy()
 
+df_visning_sum = df_visning_sum.rename(columns={
+    "Vegobjekt_540_id": "Veg_ID",
+    "Ådt_avg": "ÅDT (Årsdøgntrafikk)",
+    "Vegobjekt_540_lengde": "Lengde (m)",
+    "antall_kollisjoner": "kollisjonar siste år",
+    "samanlikning_yrke": "Samanlikning med risiko i yrke",
+    metric_col: metric_label
+}).copy()
+
+
 #print(df_visning.columns)
 
 #df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
@@ -254,6 +285,10 @@ df_visning_koll = df_visning_koll[
     ['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', 'lenke']
 ].copy()
 
+df_visning_sum = df_visning_sum[
+    ['Veg_ID', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', 'lenke']
+].copy()
+
 
 # -----------------------------
 # Styling
@@ -261,6 +296,7 @@ df_visning_koll = df_visning_koll[
 
 df_visning = df_visning.reset_index(drop=True)
 df_visning_koll = df_visning_koll.reset_index(drop=True)
+df_visning_sum = df_visning_sum.reset_index(drop=True)
 
 styled_df = df_visning.style.format({
     metric_label: "{:.2E}",
@@ -274,6 +310,13 @@ styled_df_koll = df_visning_koll.style.format({
     "Lengde (m)": "{:.0f}",
 })
 
+styled_df_sum = df_visning_sum.style.format({
+    metric_label: "{:.2E}",
+    "ÅDT (Årsdøgntrafikk)": "{:.0f}",
+    "Lengde (m)": "{:.0f}",
+})
+
+
 st.dataframe(
     styled_df,
     column_config={
@@ -285,6 +328,47 @@ st.dataframe(
     width="content",
     hide_index=True
 )
+
+st.markdown(
+    f"""
+    **Viser {top_n} vegstrekningar**  
+    Sortert etter: **Antal kollisjonar siste år, alle valde dyreartar**  
+    Dyreartar: **{", ".join(artsvalg)}**
+    """
+)
+
+st.dataframe(
+    styled_df_sum,
+    column_config={
+        "lenke": st.column_config.LinkColumn(
+            "Vegkart",
+            display_text="Opne i Vegkart"
+        )
+    },
+    width="content",
+    hide_index=True
+)
+
+st.markdown(
+    f"""
+    **Viser {top_n} vegstrekningar**  
+    Sortert etter: **Antal kollisjonar siste år**  
+    Dyreartar: **{", ".join(artsvalg)}**
+    """
+)
+
+st.dataframe(
+    styled_df_koll,
+    column_config={
+        "lenke": st.column_config.LinkColumn(
+            "Vegkart",
+            display_text="Opne i Vegkart"
+        )
+    },
+    width="content",
+    hide_index=True
+)
+
 
 st.markdown(
     f"""
