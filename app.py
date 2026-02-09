@@ -288,7 +288,7 @@ df_visning_koll = df_visning_koll[
 ].copy()
 
 df_visning_sum = df_visning_sum[
-    ['Veg_ID', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', 'lenke']
+    ['Veg_ID', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label, 'lenke']
 ].copy()
 
 
