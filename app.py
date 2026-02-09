@@ -149,6 +149,8 @@ df_top_kollisjon = (
 
 df_top_sum = df_filt
 df_top_sum[metric_col]=df_top_sum.groupby('Vegobjekt_540_id')[metric_col].sum()
+df_top_sum.dropna(inplace=True)
+
 df_top_sum = (
     df_top_sum
     .sort_values(metric_col, ascending=False)
@@ -370,25 +372,6 @@ st.dataframe(
 )
 
 
-st.markdown(
-    f"""
-    **Viser {top_n} vegstrekningar**  
-    Sortert etter: **Antal kollisjonar siste år**  
-    Dyreartar: **{", ".join(artsvalg)}**
-    """
-)
-
-st.dataframe(
-    styled_df_koll,
-    column_config={
-        "lenke": st.column_config.LinkColumn(
-            "Vegkart",
-            display_text="Opne i Vegkart"
-        )
-    },
-    width="content",
-    hide_index=True
-)
 
 risiko_dict = dict(
     zip(
