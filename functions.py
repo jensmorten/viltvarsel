@@ -354,7 +354,7 @@ async def hent_alle_wkt(veg_ids):
 
     async with httpx.AsyncClient() as client:
         tasks = [
-            hent_wkt_for_objekt(client, str(vid))
+            hent_wkt_for_objekt(client, str(vid), sem)
             for vid in veg_ids
         ]
         wkts = await asyncio.gather(*tasks)
