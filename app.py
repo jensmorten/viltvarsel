@@ -196,7 +196,7 @@ df_visning_sum = df_top_sum.copy()
 
 df_visning["Vegobjekt_540_id"] = df_visning["Vegobjekt_540_id"].astype("Int64")
 df_visning_koll["Vegobjekt_540_id"] = df_visning_koll["Vegobjekt_540_id"].astype("Int64")
-df_visning_sum["Vegobjekt_540_id"] = df_visning_koll["Vegobjekt_540_id"].astype("Int64")
+df_visning_sum["Vegobjekt_540_id"] = df_visning_sum["Vegobjekt_540_id"].astype("Int64")
 
 df_visning["Ådt_avg"] = df_visning["ÅDT, total_avg"].astype("Int64")
 df_visning_koll["Ådt_avg"] = df_visning_koll["ÅDT, total_avg"].astype("Int64")
