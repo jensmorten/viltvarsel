@@ -1,7 +1,12 @@
 import streamlit as st
 import pandas as pd
 import asyncio
+
 from functions import hent_alle_wkt, lag_felles_kart
+
+# --------------------------------------------------
+# Sideoppsett
+# --------------------------------------------------
 
 st.set_page_config(
     page_title="Risikokart",
@@ -10,12 +15,12 @@ st.set_page_config(
 
 st.title("🗺️ Risikokart – dyrepåkjørslar")
 st.markdown(
-    "Utforsk korleis risiko for dyrepåkjørslar varierer med **art, årstid og lysforhold**."
+    "Utforsk korleis risiko varierer med **dyreart, årstid og lysforhold**."
 )
 
-# ------------------
+# --------------------------------------------------
 # Last data
-# ------------------
+# --------------------------------------------------
 
 @st.cache_data
 def load_data():
@@ -23,13 +28,13 @@ def load_data():
 
 df = load_data()
 
-# ------------------
+# --------------------------------------------------
 # Sidebar – brukarval
-# ------------------
+# --------------------------------------------------
 
 st.sidebar.header("Val av risiko")
 
-art = st.sidebar.multiselect(
+artsvalg = st.sidebar.multiselect(
     "Dyreart",
     options=sorted(df["Art"].unique()),
     default=sorted(df["Art"].unique())
@@ -45,20 +50,20 @@ lys = st.sidebar.selectbox(
     options=sorted(df["lysforhold"].unique())
 )
 
-# ------------------
+# --------------------------------------------------
 # Valider input
-# ------------------
+# --------------------------------------------------
 
-if not art:
+if not artsvalg:
     st.warning("Vel minst éin dyreart.")
     st.stop()
 
-# ------------------
+# --------------------------------------------------
 # Filtrer data
-# ------------------
+# --------------------------------------------------
 
 df_filt = df[
-    (df["Art"].isin(art)) &
+    (df["Art"].isin(artsvalg)) &
     (df["årstid"] == årstid) &
     (df["lysforhold"] == lys)
 ].copy()
@@ -67,9 +72,9 @@ if df_filt.empty:
     st.warning("Ingen data for dette valet.")
     st.stop()
 
-# ------------------
-# Aggreger risiko per vegstrekning
-# ------------------
+# --------------------------------------------------
+# Aggreger per vegstrekning
+# --------------------------------------------------
 
 df_risiko = (
     df_filt
@@ -86,21 +91,31 @@ df_risiko = (
 st.markdown(
     f"""
     **Val:**  
-    Art: **{", ".join(art)}**  
+    Art: **{", ".join(artsvalg)}**  
     Årstid: **{årstid}**  
     Lysforhold: **{lys}**  
-    Viser **{len(df_risiko)}** vegstrekningar
+
+    **Viser {len(df_risiko)} vegstrekningar**
     """
 )
 
-# ------------------
-# Lag kart
-# ------------------
+# --------------------------------------------------
+# Klargjer kartdata
+# --------------------------------------------------
 
 veg_ids = df_risiko["Vegobjekt_540_id"].astype(str).tolist()
 
+if not veg_ids:
+    st.warning("Ingen vegstrekningar å vise på kartet.")
+    st.stop()
+
 with st.spinner("Hentar veggeometri frå NVDB …"):
     wkt_dict = asyncio.run(hent_alle_wkt(veg_ids))
+
+# Dersom ingen geometriar
+if not any(wkt_dict.values()):
+    st.warning("Fann ingen gyldige veggeometriar for dette valet.")
+    st.stop()
 
 risiko_dict = dict(
     zip(
@@ -109,7 +124,19 @@ risiko_dict = dict(
     )
 )
 
+# --------------------------------------------------
+# Lag kart
+# --------------------------------------------------
+
 kart = lag_felles_kart(wkt_dict, risiko_dict)
+
+if kart is None:
+    st.warning("Klarte ikkje å lage kart for dette valet.")
+    st.stop()
+
+# --------------------------------------------------
+# Vis kart
+# --------------------------------------------------
 
 st.components.v1.html(
     kart.get_root().render(),
@@ -117,9 +144,9 @@ st.components.v1.html(
     width=1800
 )
 
-# ------------------
+# --------------------------------------------------
 # Forklaring
-# ------------------
+# --------------------------------------------------
 
 with st.expander("ℹ️ Om risikokartet"):
     st.markdown(
@@ -128,7 +155,10 @@ with st.expander("ℹ️ Om risikokartet"):
         per vegstrekning, gitt val av dyreart, årstid og lysforhold.
 
         Risikoen er basert på observerte kollisjonar, normalisert
-        for trafikkmengde og veglengd, og kan brukast til å samanlikne
-        relative risikonivå mellom strekningar.
+        for trafikkmengde og veglengd, og eignar seg til å samanlikne
+        **relativ risiko** mellom vegstrekningar.
+
+        Kombinasjonar med få treff (til dømes *dag + sommar*)
+        vil naturleg gi færre eller ingen vegstrekningar.
         """
     )
