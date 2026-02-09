@@ -15,7 +15,6 @@ st.title("🗺️ Risikokart – dyrepåkjørslar")
 # Last data
 # ------------------
 
-@st.cache_data
 def load_data():
     return pd.read_csv("data/frekvens_årstid_script.csv")
 
