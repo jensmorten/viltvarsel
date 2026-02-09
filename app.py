@@ -147,7 +147,7 @@ df_top_kollisjon = (
     .head(top_n)
 )
 
-df_top_sum = df_filt
+df_top_sum = df_filt.copy()
 df_top_sum[metric_col]=df_top_sum.groupby('Vegobjekt_540_id')[metric_col].sum()
 df_top_sum.dropna(inplace=True)
 
