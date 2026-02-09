@@ -147,6 +147,8 @@ df_top_kollisjon = (
     .head(top_n)
 )
 
+df_top_sum=df_filt['Vegobjekt_540_id',metric_col,'antall_kollisjoner',"ÅDT, total_avg',Vegobjekt_540_lengde_avg",'UTM33_øst_int_avg', 'UTM_nord_int_avg'].copy()
+
 df_top_sum = (
     df_filt
     .groupby("Vegobjekt_540_id", as_index=False)
