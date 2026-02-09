@@ -65,7 +65,7 @@ df["antall_kollisjoner"] = (
 
 
 ###For å lage en troverdig frekvens treng vi 3 eller fleire hendingar
-df=df[df["antall_kollisjoner"] >=1].copy()
+df=df[df["antall_kollisjoner"] >=2].copy()
 
 df["frekvens"] = (
     df["antall_kollisjoner"]*100000*4*3 ####per 100 km per bil per år * 4 årstider*3 lysforhold
