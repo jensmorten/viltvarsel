@@ -296,10 +296,12 @@ def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
     if not risikoar:
         return None
 
-    vmin, vmax = min(risikoar), max(risikoar)
+    #vmin, vmax = min(risikoar), max(risikoar)
+    vmin= 1E-05
+    vmax = 1E-03
 
     cmap = cm.LinearColormap(
-        colors=["#2c7bb6", "#ffffbf", "#d7191c"],
+        colors=["#f8ad9d", "#ea0909", "#9a0707"],
         vmin=vmin,
         vmax=vmax
     )

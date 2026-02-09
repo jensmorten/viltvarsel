@@ -338,45 +338,45 @@ st.dataframe(
     hide_index=True
 )
 
-st.markdown(
-    f"""
-    **Viser {top_n} vegstrekningar**  
-    Sortert etter: **Historisk frekvens siste år, alle valde dyreartar**  
-    Dyreartar: **{", ".join(artsvalg)}**
-    """
-)
+# st.markdown(
+#     f"""
+#     **Viser {top_n} vegstrekningar**  
+#     Sortert etter: **Historisk frekvens siste år, alle valde dyreartar**  
+#     Dyreartar: **{", ".join(artsvalg)}**
+#     """
+# )
 
-st.dataframe(
-    styled_df_sum,
-    column_config={
-        "lenke": st.column_config.LinkColumn(
-            "Vegkart",
-            display_text="Opne i Vegkart"
-        )
-    },
-    width="content",
-    hide_index=True
-)
+# st.dataframe(
+#     styled_df_sum,
+#     column_config={
+#         "lenke": st.column_config.LinkColumn(
+#             "Vegkart",
+#             display_text="Opne i Vegkart"
+#         )
+#     },
+#     width="content",
+#     hide_index=True
+# )
 
-st.markdown(
-    f"""
-    **Viser {top_n} vegstrekningar**  
-    Sortert etter: **Antal kollisjonar siste år**  
-    Dyreartar: **{", ".join(artsvalg)}**
-    """
-)
+# st.markdown(
+#     f"""
+#     **Viser {top_n} vegstrekningar**  
+#     Sortert etter: **Antal kollisjonar siste år**  
+#     Dyreartar: **{", ".join(artsvalg)}**
+#     """
+# )
 
-st.dataframe(
-    styled_df_koll,
-    column_config={
-        "lenke": st.column_config.LinkColumn(
-            "Vegkart",
-            display_text="Opne i Vegkart"
-        )
-    },
-    width="content",
-    hide_index=True
-)
+# st.dataframe(
+#     styled_df_koll,
+#     column_config={
+#         "lenke": st.column_config.LinkColumn(
+#             "Vegkart",
+#             display_text="Opne i Vegkart"
+#         )
+#     },
+#     width="content",
+#     hide_index=True
+# )
 
 
 
