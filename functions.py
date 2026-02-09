@@ -206,7 +206,7 @@ REQUEST_TIMEOUT = 20.0
 RETRY_BACKOFF = [0.5, 1.0, 2.0]
 MAX_CONCURRENCY = 16
 
-sem = asyncio.Semaphore(MAX_CONCURRENCY)
+#sem = asyncio.Semaphore(MAX_CONCURRENCY)
 
 # Cache: objekt_id -> wkt-streng
 wkt_cache: Dict[str, str] = {}
@@ -230,7 +230,7 @@ def parse_linestring_wkt(wkt_text):
         coords.append((x, y, z))
     return coords
 
-async def hent_wkt_for_objekt(client: httpx.AsyncClient, objekt_id: str) -> str:
+async def hent_wkt_for_objekt(client: httpx.AsyncClient, objekt_id: str, sem: asyncio.Semaphore ) -> str:
     """
     Henter WKT-geometri for et vegobjekt (type 540) fra NVDB API LES.
     Returnerer tom streng dersom data mangler eller ikke finnes.
@@ -350,6 +350,8 @@ def lag_felles_kart(wkt_dict, risiko_dict, src_epsg=32633):
     return m
 
 async def hent_alle_wkt(veg_ids):
+    sem = asyncio.Semaphore(MAX_CONCURRENCY)
+
     async with httpx.AsyncClient() as client:
         tasks = [
             hent_wkt_for_objekt(client, str(vid))
