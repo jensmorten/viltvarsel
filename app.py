@@ -147,12 +147,17 @@ df_top_kollisjon = (
     .head(top_n)
 )
 
-df_top_sum = df_filt.copy()
-df_top_sum[metric_col]=df_top_sum.groupby('Vegobjekt_540_id')[metric_col].sum()
-df_top_sum.dropna(inplace=True)
-
 df_top_sum = (
-    df_top_sum
+    df_filt
+    .groupby("Vegobjekt_540_id", as_index=False)
+    .agg({
+        metric_col: "sum",
+        "antall_kollisjoner": "sum",
+        "ÅDT, total_avg": "mean",
+        "Vegobjekt_540_lengde_avg": "mean",
+        "UTM33_øst_int_avg": "mean",
+        "UTM_nord_int_avg": "mean",
+    })
     .sort_values(metric_col, ascending=False)
     .head(top_n)
 )
