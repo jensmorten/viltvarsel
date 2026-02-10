@@ -42,13 +42,13 @@ artsvalg = st.sidebar.multiselect(
 ÅRSTIDER = ["vinter", "vår", "sommar", "haust"]
 LYS = ["Dag", "Skumring", "Natt"]
 
-årstid = st.sidebar.slider(
+årstid = st.sidebar.select_slider(
     "Årstid",
     options=ÅRSTIDER,
     value="haust"
 )
 
-lys = st.sidebar.slider(
+lys = st.sidebar.select_slider(
     "Lysforhold",
     options=LYS,
     value="Natt"
