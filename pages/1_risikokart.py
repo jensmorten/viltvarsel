@@ -32,7 +32,7 @@ df = load_data()
 # Sidebar – brukarval
 # --------------------------------------------------
 
-st.sidebar.header("Val av risiko")
+st.sidebar.header("Innstilling for scenatio")
 
 artsvalg = st.sidebar.multiselect(
     "Dyreart",
@@ -40,12 +40,12 @@ artsvalg = st.sidebar.multiselect(
     default=sorted(df["Art"].unique())
 )
 
-årstid = st.sidebar.selectbox(
+årstid = st.sidebar.slider(
     "Årstid",
     options=sorted(df["årstid"].unique())
 )
 
-lys = st.sidebar.selectbox(
+lys = st.sidebar.slider(
     "Lysforhold",
     options=sorted(df["lysforhold"].unique())
 )
