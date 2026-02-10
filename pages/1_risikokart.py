@@ -75,6 +75,7 @@ if df_filt.empty:
 # --------------------------------------------------
 # Aggreger per vegstrekning
 # --------------------------------------------------
+df_filt["Vegobjekt_540_id"] = df_filt["Vegobjekt_540_id"].astype("Int64")
 
 df_risiko = (
     df_filt
@@ -103,7 +104,14 @@ st.markdown(
 # Klargjer kartdata
 # --------------------------------------------------
 
-veg_ids = df_risiko["Vegobjekt_540_id"].dropna().astype("Int64").astype(str).tolist()
+#veg_ids = df_risiko["Vegobjekt_540_id"].dropna().astype("Int64").astype(str).tolist()
+
+veg_ids = (
+            df_risiko["Vegobjekt_540_id"]
+            .dropna()
+            .astype(str)
+            .tolist()
+        )
 
 if not veg_ids:
     st.warning("Ingen vegstrekningar å vise på kartet.")
