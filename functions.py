@@ -225,8 +225,10 @@ def parse_linestring_wkt(wkt_text):
         nums = part.strip().split()
         if len(nums) < 2:
             continue
-        x = float(nums[0]); y = float(nums[1])
-        z = float(nums[2]) if len(nums) >= 3 else None
+        #x = float(nums[0]); y = float(nums[1])
+        x = float(nums[0].lstrip("("))
+        y = float(nums[1].rstrip(")"))
+        z = float(nums[2].rstrip(")")) if len(nums) >= 3 else None
         coords.append((x, y, z))
     return coords
 
