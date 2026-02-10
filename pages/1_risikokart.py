@@ -39,17 +39,19 @@ artsvalg = st.sidebar.multiselect(
     options=sorted(df["Art"].unique()),
     default=sorted(df["Art"].unique())
 )
+ÅRSTIDER = ["vinter", "vår", "sommar", "haust"]
+LYS = ["Dag", "Skumring", "Natt"]
 
 årstid = st.sidebar.slider(
     "Årstid",
-    options=sorted(df["årstid"].unique()),
+    options=ÅRSTIDER,
     value="haust"
 )
 
 lys = st.sidebar.slider(
     "Lysforhold",
-    options=sorted(df["lysforhold"].unique()),
-    value="dag"
+    options=LYS,
+    value="Natt"
 )
 
 # --------------------------------------------------
