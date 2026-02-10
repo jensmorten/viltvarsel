@@ -45,13 +45,13 @@ LYS = ["Dag", "Skumring", "Natt"]                  # døgn
 årstid = st.sidebar.select_slider(
     "Årstid",
     options=ÅRSTIDER,
-    value="haust"
+    value="sommar"
 )
 
 lys = st.sidebar.select_slider(
     "Lysforhold",
     options=LYS,
-    value="Natt"
+    value="Dag"
 )
 
 # --------------------------------------------------
