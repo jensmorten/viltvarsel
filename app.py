@@ -116,7 +116,7 @@ per vegstrekning, og justere risikomålet for situasjonsbaserte justeringar (år
 som kan nyttast i sanntid i bil (infotainment / varsling).
 <br>
 <br>                    
-ℹ️ Les meir her: <a href= https://github.com/jensmorten/viltvarsel/blob/main/README.md"""
+ℹ️<a href= https://github.com/jensmorten/viltvarsel/blob/main/README.md> Les meir om prosjektet </a>"""
 ,unsafe_allow_html=True)
 
 # --------------------------------------------------
