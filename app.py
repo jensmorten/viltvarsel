@@ -110,9 +110,9 @@ top_n = st.sidebar.slider(
 )
 
 st.sidebar.markdown("""
-🫎⚠️Viltfrekvens – dyrepåkjørsler per vegstrekning Dette konseptutprøvinss prosjektet (PoC) utviklar ein datadreven 
+🫎⚠️Viltfrekvens – dyrepåkjørsler per vegstrekning. Dette konseptutprøvingsprosjektet (PoC) utviklar ein datadreven 
 modell for risiko for dyrepåkjørsler på norske vegstrekningar. Målet er å gi eit enkelt, samanliknbart risikomål 
-per vegstrekning, og justere risikomålet for situasjonsbaserte justeringar (årstid, lysforhald m.m.) 
+per vegstrekning, og justere risikomålet for situasjonsbaserte variablar (årstid, lysforhald m.m.) 
 som kan nyttast i sanntid i bil (infotainment / varsling).
 <br>
 <br>                    
