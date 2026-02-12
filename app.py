@@ -112,11 +112,11 @@ top_n = st.sidebar.slider(
 st.sidebar.markdown("""
 🫎⚠️Viltfrekvens – dyrepåkjørsler per vegstrekning Dette konseptutprøvinss prosjektet (PoC) utviklar ein datadreven 
 modell for risiko for dyrepåkjørsler på norske vegstrekningar. Målet er å gi eit enkelt, samanliknbart risikomål 
-per vegstrekning, og justere risikomålet for situasjonsbaserte justeringar (årstid, lysforhold m.m.) 
+per vegstrekning, og justere risikomålet for situasjonsbaserte justeringar (årstid, lysforhald m.m.) 
 som kan nyttast i sanntid i bil (infotainment / varsling).
 <br>
 <br>                    
-ℹ️<a href= https://github.com/jensmorten/viltvarsel/blob/main/README.md> Les meir om prosjektet </a>"""
+ℹ️<a href= "https://github.com/jensmorten/viltvarsel/blob/main/README.md">Les meir om prosjektet</a>"""
 ,unsafe_allow_html=True)
 
 # --------------------------------------------------
