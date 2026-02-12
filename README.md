@@ -1,5 +1,5 @@
 🐾 Viltfrekvens – dyrepåkjørsler per vegstrekning
-Dette konseptutprøvinss prosjektet (PoC) utviklar ein datadreven modell for risiko for dyrepåkjørsler på norske vegstrekningar. Målet er å gi eit enkelt, samanliknbart risikomål per vegstrekning, og justere risikomålet for situasjonsbaserte justeringar (årstid, lysforhold m.m.) som kan nyttast i sanntid i bil (infotainment / varsling).
+Dette konseptutprøvingsprosjektet (PoC) utviklar ein datadreven modell for risiko for dyrepåkjørsler på norske vegstrekningar. Målet er å gi eit enkelt, samanliknbart risikomål per vegstrekning, og justere risikomålet for situasjonsbaserte variablar (årstid, lysforhold m.m.) som kan nyttast i sanntid i bil (infotainment / varsling).
 
 👉 Live demo (Streamlit-app):
 https://viltfrekvens.streamlit.app/
