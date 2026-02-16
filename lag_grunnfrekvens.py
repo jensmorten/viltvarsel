@@ -19,15 +19,12 @@ df=df[df['Art'].isin(['Elg', 'Hjort', 'Rådyr'])].copy()
 df=df[df['vegkategori'].isin(['E','F','K'])].copy()
 df=df[df['ÅDT, total']>100].copy()
 
-
-
 df["UTM33_øst_int"] = (
     df["UTM33 øst"]
     .astype(str)
     .str.split(",", n=1)
     .str[0].astype(int)
 )
-
 
 df["UTM_nord_int"] = (
     df["UTM33 nord"]
@@ -36,10 +33,8 @@ df["UTM_nord_int"] = (
     .str[0].astype(int)
 )
 
-
 ###TA bare med relevante kolonner videre
 df=df[['Vegobjekt_540_id', 'Art','ÅDT, total','Vegobjekt_540_lengde', 'UTM_nord_int', 'UTM33_øst_int']].copy()
-
 
 kolonner = [
     "ÅDT, total", ##vi antar bare 1 verdi for hvert vegobjekt-id, men i fall det er ulikt tar vi gjennomsnitt
