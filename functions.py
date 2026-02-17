@@ -177,7 +177,7 @@ def lag_lysjustering(model, referanse="Dag", damping=1, normaliser=False):
             lys = k.split("[T.")[1].rstrip("]")
             # Demp effekten
             beta_dempet = damping * beta
-            lys_justering[lys] = np.round(float(np.exp(beta_dempet)))
+            lys_justering[lys] = np.round(float(np.exp(beta_dempet)),2)
 
     if normaliser:
         mean_factor = np.mean(list(lys_justering.values()))
