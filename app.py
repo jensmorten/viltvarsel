@@ -8,6 +8,11 @@ from zoneinfo import ZoneInfo
 import asyncio
 from streamlit_folium import st_folium
 import folium
+import os
+from azure.identity import ClientSecretCredential
+from azure.storage.filedatalake import DataLakeServiceClient
+from io import BytesIO
+
 from streamlit.components.v1 import html
 
 from functions import (
@@ -76,11 +81,30 @@ LYSFORHOLD_NO = finn_lys(datetime.now(tz=ZoneInfo("Europe/Oslo")))
 # --------------------------------------------------
 
 #@st.cache_data
-def load_data():
-    df = pd.read_csv("frekvens_final.csv", encoding="utf-8")
-    return df
+#def load_data():
+#    df = pd.read_csv("frekvens_final.csv", encoding="utf-8")
+#    return df
 
-df = load_data()
+
+credential = ClientSecretCredential(
+    tenant_id=st.secrets["TENANT_ID"],
+    client_id=st.secrets["CLIENT_ID"],
+    client_secret=st.secrets["CLIENT_SECRET"]
+)
+
+account_url = "https://onelake.dfs.fabric.microsoft.com"
+service_client = DataLakeServiceClient(account_url, credential=credential)
+
+file_system_client = service_client.get_file_system_client("vilt_lakehouse")
+
+file_client = file_system_client.get_file_client(
+    "Files/fallvilt/silver/fallvilt_silver.csv"
+)
+
+download = file_client.download_file()
+data = download.readall()
+
+df = pd.read_csv(BytesIO(data), sep=";")
 
 # --------------------------------------------------
 # Sidebar – brukarval
