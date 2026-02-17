@@ -98,7 +98,7 @@ service_client = DataLakeServiceClient(account_url, credential=credential)
 file_system_client = service_client.get_file_system_client("vilt_lakehouse.lakehouse")
 
 file_client = file_system_client.get_file_client(
-    "Files/fallvilt/silver/fallvilt_silver.csv"
+    "/lakehouse/default/Files/fallvilt/silver/fallvilt_silver.csv"
 )
 
 download = file_client.download_file()
