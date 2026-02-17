@@ -9,6 +9,7 @@ import asyncio
 from streamlit_folium import st_folium
 import folium
 import os
+import json
 from azure.identity import ClientSecretCredential
 from azure.storage.filedatalake import DataLakeServiceClient
 from io import BytesIO
@@ -42,19 +43,19 @@ def finn_årstid(dato):
         return "haust"
 
 
-ARSTID_JUSTERING = {
-    "haust": 1.00,
-    "vinter": 0.98,
-    "vår": 0.85,
-    "sommar": 0.79,
-}
+#ARSTID_JUSTERING = {
+#    "haust": 1.00,
+#    "vinter": 0.98,
+#    "vår": 0.85,
+#    "sommar": 0.79,
+#}
 
 DAGENS_ÅRSTID = finn_årstid(date.today())
 
-LYS_JUSTERING = {
-    'dag': 1.0, 
-    'natt': 1.09, 
-    'skumring': 1.08}
+#LYS_JUSTERING = {
+#    'dag': 1.0, 
+#    'natt': 1.09, 
+#    'skumring': 1.08}
 
 def finn_lys(now):
     TRONDELAG = LocationInfo(
@@ -73,8 +74,6 @@ def finn_lys(now):
         return "natt"
     
 LYSFORHOLD_NO = finn_lys(datetime.now(tz=ZoneInfo("Europe/Oslo"))) 
-
-
 
 # --------------------------------------------------
 # Data loading
@@ -105,6 +104,25 @@ download = file_client.download_file()
 data = download.readall()
 
 df = pd.read_csv(BytesIO(data), sep=";")
+
+file_client_arstid = file_system_client.get_file_client(
+    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/ARSTID_JUSTERING.json"
+)
+
+download_arstid = file_client_arstid.download_file()
+data_arstid = download_arstid.readall()
+
+ARSTID_JUSTERING = json.loads(data_arstid)
+
+# LYSJUSTERING.json
+file_client_lys = file_system_client.get_file_client(
+    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/LYSJUSTERING.json"
+)
+
+download_lys = file_client_lys.download_file()
+data_lys = download_lys.readall()
+
+LYS_JUSTERING = json.loads(data_lys)
 
 # --------------------------------------------------
 # Sidebar – brukarval
