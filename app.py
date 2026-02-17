@@ -87,9 +87,9 @@ LYSFORHOLD_NO = finn_lys(datetime.now(tz=ZoneInfo("Europe/Oslo")))
 
 
 credential = ClientSecretCredential(
-    tenant_id=st.secrets["TENANT_ID"],
-    client_id=st.secrets["CLIENT_ID"],
-    client_secret=st.secrets["CLIENT_SECRET"]
+    tenant_id=st.secrets["Tenant_ID"],
+    client_id=st.secrets["Client_ID"],
+    client_secret=st.secrets["Client_secret_id"]
 )
 
 account_url = "https://onelake.dfs.fabric.microsoft.com"
