@@ -119,11 +119,11 @@ def lyskategori_fra_tidspunkt(ts):
     # Bruk solhøgde (grader over/under horisont)
     solhoyde = elevation(TRONDELAG.observer, ts)
     if solhoyde > 12:
-        return "Dag"
+        return "dag"
     elif solhoyde >-12:
-        return "Skumring"
+        return "skumring"
     else:
-        return "Natt"
+        return "natt"
     
 
 def maaned_til_arstid(dato):
@@ -163,7 +163,7 @@ def lag_arstidsjustering(model, referanse="haust"):
 
     return arstid_justering
 
-def lag_lysjustering(model, referanse="Dag", damping=1, normaliser=False):
+def lag_lysjustering(model, referanse="dag", damping=1, normaliser=False):
     """
     Lag justeringsfaktorar for lysforhold frå GLM,
     med valfri damping for å unngå overtolking.
