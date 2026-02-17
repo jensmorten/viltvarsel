@@ -95,7 +95,7 @@ credential = ClientSecretCredential(
 account_url = "https://onelake.dfs.fabric.microsoft.com"
 service_client = DataLakeServiceClient(account_url, credential=credential)
 
-file_system_client = service_client.get_file_system_client("vilt_lakehouse")
+file_system_client = service_client.get_file_system_client("vilt_lakehouse.lakehouse")
 
 file_client = file_system_client.get_file_client(
     "Files/fallvilt/silver/fallvilt_silver.csv"
