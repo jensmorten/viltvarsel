@@ -1,15 +1,14 @@
-import asyncio
 import csv
 from typing import Dict, Any, Tuple
-import httpx
+import requests
 from tqdm import tqdm
 
 # --- Config (add these) ---
 X_CLIENT = "fallvilt-posisjon-enricher" 
 
 # --- Config ---
-INPUT_FILE = "Fallvilt_trdlag_2016-2026.csv"
-OUTPUT_FILE = "Fallvilt_trdlag_2016-2026_enriched.csv"
+INPUT_FILE = "Fallvilt.csv"
+OUTPUT_FILE = "Fallvilt_nvdb_enriched.csv"
 
 # NVDB posisjon endpoint (Les V4, produksjon)
 POSISJON_URL = "https://nvdbapiles.atlas.vegvesen.no/vegnett/api/v4/posisjon"
@@ -18,19 +17,10 @@ POSISJON_URL = "https://nvdbapiles.atlas.vegvesen.no/vegnett/api/v4/posisjon"
 MAKS_AVSTAND = 200
 
 # Networking / concurrency
-TIMEOUT = httpx.Timeout(10.0)        # seconds
+TIMEOUT = 10.0        # seconds
 MAX_RETRIES = 3
 RETRY_BACKOFF = 1.5                  # seconds, exponential backoff base
-CONCURRENCY = 4                     # tune: 8–64; lower if you hit 429/5xx
-
-# HTTPX connection pool limits (see docs)
-LIMITS = httpx.Limits(
-    max_connections=CONCURRENCY * 2,         # total concurrent sockets
-    max_keepalive_connections=CONCURRENCY,   # idle keepalive sockets
-)
-
-# Enable HTTP/2 for request multiplexing (requires `pip install "httpx[http2]"`)
-HTTP2 = True
+CONCURRENCY = 16                     # tune: 8–64; lower if you hit 429/5xx
 
 # Columns expected in input CSV (Norwegian headers, semicolon separated)
 COL_OST = "UTM33 øst"
@@ -107,7 +97,7 @@ def extract_fields(hit: Dict[str, Any]) -> Dict[str, Any]:
 
 import math
 
-async def posisjon_lookup(client: httpx.AsyncClient, ost: float, nord: float) -> Dict[str, Any]:
+def posisjon_lookup(ost: float, nord: float, headers: dict) -> Dict[str, Any]:
     """
     Async call to NVDB posisjon. Returns flattened dict matching NEW_COLS.
     Also logs the exact HTTP request and any error body on failure.
@@ -126,43 +116,26 @@ async def posisjon_lookup(client: httpx.AsyncClient, ost: float, nord: float) ->
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            # Build request so we can log it
-            req = client.build_request("GET", POSISJON_URL, params=params)
-
-            # === LOG THE EXACT REQUEST ===
-            #print(f"\n--> {req.method} {req.url}")
-            # Show the *actual* headers that will go out (includes defaults)
-            #print("Headers:", dict(req.headers))
-
-            # Send the prepared request
-            resp = await client.send(req)
-
-            # Basic status logging
-            #print(f"<-- HTTP {resp.status_code} {resp.reason_phrase}")
-
+            resp = requests.get(POSISJON_URL, params=params, headers=headers, timeout=TIMEOUT)
             if resp.status_code == 200:
                 data = resp.json()
                 if isinstance(data, list) and data:
                     return extract_fields(data[0])  # take first hit
                 return blank_result()
-
-            # If server says 4xx/5xx, print error body to understand *why*
             err_text = resp.text
             print("Error body (truncated to 1k):", err_text[:1000])
-
-            # Backoff then retry on transient issues
-            await asyncio.sleep(RETRY_BACKOFF ** attempt)
-
-        except httpx.RequestError as e:
+            import time
+            time.sleep(RETRY_BACKOFF ** attempt)
+        except requests.RequestException as e:
             print(f"RequestError on attempt {attempt}: {e}")
-            await asyncio.sleep(RETRY_BACKOFF ** attempt)
-
+            import time
+            time.sleep(RETRY_BACKOFF ** attempt)
     return blank_result()
 
-async def enrich_row_with_posisjon(
-    client: httpx.AsyncClient,
+def enrich_row_with_posisjon(
     row: Dict[str, Any],
-    cache: Dict[Tuple[float, float], Dict[str, Any]]
+    cache: Dict[Tuple[float, float], Dict[str, Any]],
+    headers: dict
 ) -> Dict[str, Any]:
     ost = parse_float_locale(row.get(COL_OST))
     nord = parse_float_locale(row.get(COL_NORD))
@@ -174,12 +147,12 @@ async def enrich_row_with_posisjon(
     if cached is not None:
         return cached
 
-    enriched = await posisjon_lookup(client, ost, nord)
+    enriched = posisjon_lookup(ost, nord, headers)
     cache[key] = enriched
     return enriched
 
 
-async def main_async():
+def main():
     # Read rows first (unchanged)
     with open(INPUT_FILE, mode="r", encoding="utf-8") as infile:
         reader = csv.DictReader(infile, delimiter=";")
@@ -199,25 +172,10 @@ async def main_async():
     }
 
     cache: Dict[Tuple[float, float], Dict[str, Any]] = {}
-
-    async with httpx.AsyncClient(
-        headers=headers,
-        timeout=TIMEOUT,
-        limits=LIMITS,
-        http2=HTTP2,
-    ) as client:
-        sem = asyncio.Semaphore(CONCURRENCY)
-
-        async def worker(i_row: int):
-            async with sem:
-                enriched = await enrich_row_with_posisjon(client, rows[i_row], cache)
-                return i_row, enriched
-
-        tasks = [worker(i) for i in range(len(rows))]
-        results: Dict[int, Dict[str, Any]] = {}
-        for coro in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Enriching rows", unit="row"):
-            i, enriched = await coro
-            results[i] = enriched
+    results: Dict[int, Dict[str, Any]] = {}
+    for i in tqdm(range(len(rows)), desc="Enriching rows", unit="row"):
+        enriched = enrich_row_with_posisjon(rows[i], cache, headers)
+        results[i] = enriched
 
     # Write output CSV once, preserving original order
     with open(OUTPUT_FILE, mode="w", newline="", encoding="utf-8") as outfile:
@@ -231,4 +189,4 @@ async def main_async():
     print(f"✅ Enriched data written to: {OUTPUT_FILE}")
 
 if __name__ == "__main__":
-    asyncio.run(main_async())
+    main()
