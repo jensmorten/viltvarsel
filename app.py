@@ -134,9 +134,12 @@ meta_data = download_meta.readall()
 
 METADATA = json.loads(meta_data)
 
-sist_oppdatert=METADATA['sist_oppdatert']
-første_kollisjon= METADATA['første_kollisjon']
-siste_kollisjon = METADATA['siste_kollisjon']
+def _fmt_dato(s):
+    return pd.to_datetime(s).strftime("%d.%m.%y kl. %H:%M")
+
+sist_oppdatert  = _fmt_dato(METADATA['sist_oppdatert'])
+første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
+siste_kollisjon  = _fmt_dato(METADATA['siste_kollisjon'])
 
 # --------------------------------------------------
 # Sidebar – brukarval
