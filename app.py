@@ -124,6 +124,20 @@ data_lys = download_lys.readall()
 
 LYS_JUSTERING = json.loads(data_lys)
 
+# metadata.json
+file_client_meta = file_system_client.get_file_client(
+    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/metadata.json"
+)
+
+download_meta = file_client_meta.download_file()
+meta_data = download_meta.readall()
+
+METADATA = json.loads(meta_data)
+
+sist_oppdatert=METADATA['sist_oppdatert']
+første_kollisjon= METADATA['første_kollisjon']
+siste_kollisjon = METADATA['siste_kollisjon']
+
 # --------------------------------------------------
 # Sidebar – brukarval
 # --------------------------------------------------
@@ -237,12 +251,14 @@ else:
 print(datetime.now(ZoneInfo("Europe/Oslo")).tzname()) 
 
 
+
 st.markdown(
     f"""
     **Viser topp {top_n} vegstrekningar**  
     Sortert etter: **{metric_label}**  
     Dyreartar: **{", ".join(artsvalg)}** \n
-    {txt}
+    {txt} \n
+    Data er oppdatert {sist_oppdatert} og inneheld kollisjonar mellom {første_kollisjon} og {siste_kollisjon}. \n
     """
 )
 
