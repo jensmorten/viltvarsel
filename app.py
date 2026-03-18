@@ -7,7 +7,7 @@ from astral.sun import elevation
 from zoneinfo import ZoneInfo
 import asyncio
 from streamlit_folium import st_folium
-import folium
+#import folium
 import os
 import json
 from azure.identity import ClientSecretCredential
@@ -217,7 +217,7 @@ df_top_kollisjon = (
     .head(top_n)
 )
 
-df_top_sum=df_filt[['Vegobjekt_540_id',metric_col,'antall_kollisjoner','ÅDT, total_avg','Vegobjekt_540_lengde_avg','UTM33_øst_int_avg', 'UTM_nord_int_avg']].copy()
+df_top_sum=df_filt[['Vegobjekt_540_id','Vegnamn',metric_col,'antall_kollisjoner','ÅDT, total_avg','Vegobjekt_540_lengde_avg','UTM33_øst_int_avg', 'UTM_nord_int_avg']].copy()
 
 df_top_sum = (
     df_filt
@@ -359,15 +359,15 @@ df_visning_sum = df_visning_sum.rename(columns={
 
 #df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
 df_visning = df_visning[
-    ['Veg_ID','lenke', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label,'Samanlikning med risiko i yrke']
+    ['Veg_ID', 'Vegnamn','lenke', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label,'Samanlikning med risiko i yrke']
 ].copy()
 
 df_visning_koll = df_visning_koll[
-    ['Veg_ID', 'lenke', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år']
+    ['Veg_ID', 'Vegnamn', 'lenke', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år']
 ].copy()
 
 df_visning_sum = df_visning_sum[
-    ['Veg_ID', 'lenke', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label]
+    ['Veg_ID', 'Vegnamn','lenke', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label]
 ].copy()
 
 

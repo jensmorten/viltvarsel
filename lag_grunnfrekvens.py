@@ -33,8 +33,16 @@ df["UTM_nord_int"] = (
     .str[0].astype(int)
 )
 
+df["Vegnamn"] = (
+    df["vegsystemreferanse.kortform"]
+    .astype(str)
+    .str.split(" ", n=1)
+    .str[0].astype(str)
+)
+
+
 ###TA bare med relevante kolonner videre
-df=df[['Vegobjekt_540_id', 'Art','ÅDT, total','Vegobjekt_540_lengde', 'UTM_nord_int', 'UTM33_øst_int']].copy()
+df=df[['Vegobjekt_540_id','Vegnamn', 'Art','ÅDT, total','Vegobjekt_540_lengde', 'UTM_nord_int', 'UTM33_øst_int']].copy()
 
 kolonner = [
     "ÅDT, total", ##vi antar bare 1 verdi for hvert vegobjekt-id, men i fall det er ulikt tar vi gjennomsnitt
@@ -76,6 +84,7 @@ df["årsrisiko"] = df["frekvens"]*150  ###antatt 150000 km i gjennomsnitt for en
 
 
 df=df[['Vegobjekt_540_id', 
+       'Vegnamn',
        'Art', 
        'ÅDT, total_avg',
        'Vegobjekt_540_lengde_avg', 
@@ -93,5 +102,5 @@ df["samanlikning_yrke"] = df["årsrisiko"].apply(
 )
 
 
-df.to_csv("data/frekvens_script.csv",encoding='utf-8', index=False)
+df.to_csv("data/frekvens_script_2.csv",encoding='utf-8', index=False)
 print(f"🎈 Hurra! {len(df)} grunnfrekvensar lagra to .csv-file")
