@@ -223,6 +223,7 @@ df_top_sum = (
     df_filt
     .groupby("Vegobjekt_540_id", as_index=False)
     .agg({
+        "Vegnamn": "first",
         metric_col: "sum",
         "antall_kollisjoner": "sum",
         "ÅDT, total_avg": "mean",
@@ -359,7 +360,7 @@ df_visning_sum = df_visning_sum.rename(columns={
 
 #df_visning=df_visning[['Veg_ID', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)','frekvens','lenke']].copy()
 df_visning = df_visning[
-    ['Veg_ID', 'Vegnamn','lenke', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label,'Samanlikning med risiko i yrke']
+    ['Veg_ID', 'Vegnamn', 'lenke', 'Art', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label,'Samanlikning med risiko i yrke']
 ].copy()
 
 df_visning_koll = df_visning_koll[
@@ -367,7 +368,7 @@ df_visning_koll = df_visning_koll[
 ].copy()
 
 df_visning_sum = df_visning_sum[
-    ['Veg_ID', 'Vegnamn','lenke', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label]
+    ['Veg_ID', 'Vegnamn', 'lenke', 'ÅDT (Årsdøgntrafikk)', 'Lengde (m)', 'kollisjonar siste år', metric_label]
 ].copy()
 
 
