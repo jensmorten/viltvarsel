@@ -25,7 +25,7 @@ st.markdown(
 @st.cache_data
 def load_data():
     #return pd.read_csv("data/frekvens_årstid_script.csv")
-    return pd.read_csv("https://github.com/jensmorten/viltvarsel/blob/main/data/frekvens_%C3%A5rstid_script.csv")
+    return pd.read_csv("https://raw.githubusercontent.com/jensmorten/viltvarsel/refs/heads/main/data/frekvens_årstid_script.csv")
 
 df = load_data()
 
