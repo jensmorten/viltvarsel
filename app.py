@@ -100,39 +100,60 @@ file_client = file_system_client.get_file_client(
     "vilt_lakehouse.lakehouse/Files/fallvilt/silver/fallvilt_silver.csv"
 )
 
-download = file_client.download_file()
-data = download.readall()
+try:
+    download = file_client.download_file()
+    data = download.readall()
+    df = pd.read_csv(BytesIO(data), sep=";")
+except:
+    df = pd.read_csv("frekvens_script.csv", encoding="utf-8")
 
-df = pd.read_csv(BytesIO(data), sep=";")
+try:
+    file_client_arstid = file_system_client.get_file_client(
+        "vilt_lakehouse.lakehouse/Files/fallvilt/silver/ARSTID_JUSTERING.json"
+        )
+    download_arstid = file_client_arstid.download_file()
+    data_arstid = download_arstid.readall()
+    ARSTID_JUSTERING = json.loads(data_arstid)
+except:
+    ARSTID_JUSTERING = {
+    "haust": 1.00,
+    "vinter": 0.98,
+    "vår": 0.85,
+    "sommar": 0.79,
+    }
 
-file_client_arstid = file_system_client.get_file_client(
-    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/ARSTID_JUSTERING.json"
-)
+try:
+    # LYSJUSTERING.json
+    file_client_lys = file_system_client.get_file_client(
+        "vilt_lakehouse.lakehouse/Files/fallvilt/silver/LYSJUSTERING.json"
+    )
+    download_lys = file_client_lys.download_file()
+    data_lys = download_lys.readall()
+    LYS_JUSTERING = json.loads(data_lys)
+except:
+    LYS_JUSTERING = {
+    'dag': 1.0, 
+    'natt': 1.09, 
+    'skumring': 1.08
+    }
 
-download_arstid = file_client_arstid.download_file()
-data_arstid = download_arstid.readall()
+try:# metadata.json
+    file_client_meta = file_system_client.get_file_client(
+        "vilt_lakehouse.lakehouse/Files/fallvilt/silver/metadata.json"
+    )
 
-ARSTID_JUSTERING = json.loads(data_arstid)
+    download_meta = file_client_meta.download_file()
+    meta_data = download_meta.readall()
 
-# LYSJUSTERING.json
-file_client_lys = file_system_client.get_file_client(
-    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/LYSJUSTERING.json"
-)
+    METADATA = json.loads(meta_data)
 
-download_lys = file_client_lys.download_file()
-data_lys = download_lys.readall()
+except:
+    METADATA = {
+    'sist_oppdatert': "01.01.2025 kl. 12:00" , 
+    'første kollisjon': "01.01.2025 kl. 12:00", 
+    'siste_kollisjon': "31.01.2025 kl. 12:00"
+    }
 
-LYS_JUSTERING = json.loads(data_lys)
-
-# metadata.json
-file_client_meta = file_system_client.get_file_client(
-    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/metadata.json"
-)
-
-download_meta = file_client_meta.download_file()
-meta_data = download_meta.readall()
-
-METADATA = json.loads(meta_data)
 
 def _fmt_dato(s):
     return pd.to_datetime(s).strftime("%d.%m.%y kl. %H:%M")
