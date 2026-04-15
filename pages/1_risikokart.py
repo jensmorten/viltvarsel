@@ -25,7 +25,7 @@ st.markdown(
 #@st.cache_data
 def load_data():
     df=pd.read_csv("data/frekvens_årstid_script.csv", sep=",")
-    print(df.count())
+    print(df.columns)
     return df
     
 df = load_data()
