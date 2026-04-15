@@ -25,7 +25,7 @@ st.markdown(
 #@st.cache_data
 def load_data():
     df=pd.read_csv("data/frekvens_årstid_script.csv", sep=",")
-    print(df.columns)
+    #print(df.columns)
     return df
     
 df = load_data()
@@ -75,7 +75,7 @@ df_filt = df[
     (df["lysforhold"] == lys)
 ].copy()
 
-print(df_filt)
+#print(df_filt)
 
 #if df_filt.empty:
 #    st.warning("Ingen data for dette valet.")
