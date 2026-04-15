@@ -152,12 +152,12 @@ except:
     }
 
 
-def _fmt_dato(s):
-    return pd.to_datetime(s).strftime("%d.%m.%y kl. %H:%M")
+#def _fmt_dato(s):
+#    return pd.to_datetime(s).strftime("%d.%m.%y kl. %H:%M")
 
-#sist_oppdatert  = _fmt_dato(METADATA['sist_oppdatert'])
-#første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
-#siste_kollisjon  = _fmt_dato(METADATA['siste_kollisjon'])
+##sist_oppdatert  = _fmt_dato(METADATA['sist_oppdatert'])
+##første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
+##siste_kollisjon  = _fmt_dato(METADATA['siste_kollisjon'])
 
 sist_oppdatert =  "2025-01-01 12:00",
 første_kollisjon= "2025-01-01 12:00",
