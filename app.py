@@ -146,8 +146,8 @@ try:# metadata.json
 
 except:
     METADATA = {
-        'sist_oppdatert': '2025-01-01 12:00",
-        'første_kollisjon': 2025-01-01 12:00",
+        'sist_oppdatert': "2025-01-01 12:00",
+        'første_kollisjon': "2025-01-01 12:00",
         'siste_kollisjon': "2025-01-31 12:00"
     }
 
