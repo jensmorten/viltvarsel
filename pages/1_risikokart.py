@@ -53,7 +53,7 @@ LYS = ["dag", "skumring", "natt"]                  # døgn
 lys = st.sidebar.select_slider(
     "Lysforhold",
     options=LYS,
-    value="Dag"
+    value="dag"
 )
 
 # --------------------------------------------------
