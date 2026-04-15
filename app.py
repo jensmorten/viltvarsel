@@ -151,9 +151,12 @@ except:
         'siste_kollisjon': "2025-01-31 12:00"
     }
 
-
 def _fmt_dato(s):
-    return pd.to_datetime(s).strftime("%d.%m.%y kl. %H:%M")
+    try:
+        s_clean = str(s).replace(" kl.", "")
+        return pd.to_datetime(s_clean, dayfirst=True).strftime("%d.%m.%y kl. %H:%M")
+    except Exception:
+        return str(s)  # fallback: vis råverdi
 
 sist_oppdatert  = _fmt_dato(METADATA['sist_oppdatert'])
 første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
