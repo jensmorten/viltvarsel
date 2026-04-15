@@ -160,9 +160,9 @@ try:
     første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
     siste_kollisjon  = _fmt_dato(METADATA['siste_kollisjon'])
 except:
-    sist_oppdatert =  "2025-01-01 12:00",
-    første_kollisjon= "2025-01-01 12:00",
-    siste_kollisjon= "2025-01-31 12:00"
+    sist_oppdatert= "31.01.2026 kl. 12:00"
+    første_kollisjon= "01.01.2025 kl. 12:00"
+    siste_kollisjon= "31.01.2026 kl. 12:00"
 
 # --------------------------------------------------
 # Sidebar – brukarval
