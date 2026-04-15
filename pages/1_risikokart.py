@@ -75,6 +75,8 @@ df_filt = df[
     (df["lysforhold"] == lys)
 ].copy()
 
+print(df_filt)
+
 #if df_filt.empty:
 #    st.warning("Ingen data for dette valet.")
 #    st.stop()
