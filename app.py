@@ -91,21 +91,18 @@ credential = ClientSecretCredential(
     client_secret=st.secrets["Client_secret_value"]
 )
 
-account_url = "https://onelake.dfs.fabric.microsoft.com"
-service_client = DataLakeServiceClient(account_url, credential=credential)
-
-file_system_client = service_client.get_file_system_client("Viltmedaljong")
-
-file_client = file_system_client.get_file_client(
-    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/fallvilt_silver.csv"
-)
-
 try:
+    account_url = "https://onelake.dfs.fabric.microsoft.com"
+    service_client = DataLakeServiceClient(account_url, credential=credential)
+    file_system_client = service_client.get_file_system_client("Viltmedaljong")
+    file_client = file_system_client.get_file_client(
+    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/fallvilt_silver.csv"
+    )
     download = file_client.download_file()
     data = download.readall()
     df = pd.read_csv(BytesIO(data), sep=";")
 except:
-    df = pd.read_csv("frekvens_script.csv", encoding="utf-8")
+    df = pd.read_csv("https://raw.githubusercontent.com/jensmorten/viltvarsel/refs/heads/main/data/frekvens_script_2.csv", encoding="utf-8")
 
 try:
     file_client_arstid = file_system_client.get_file_client(
