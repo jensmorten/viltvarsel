@@ -42,7 +42,7 @@ artsvalg = st.sidebar.multiselect(
     default=sorted(df["Art"].unique())
 )
 ÅRSTIDER = ["vinter", "vår", "sommar", "haust"]   # biologisk syklus
-LYS = ["Dag", "Skumring", "Natt"]                  # døgn
+LYS = ["dag", "skumring", "natt"]                  # døgn
 
 årstid = st.sidebar.select_slider(
     "Årstid",
