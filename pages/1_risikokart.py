@@ -24,7 +24,8 @@ st.markdown(
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("data/frekvens_årstid_script.csv")
+    #return pd.read_csv("data/frekvens_årstid_script.csv")
+    return pd.read_csv("https://github.com/jensmorten/viltvarsel/blob/main/data/frekvens_%C3%A5rstid_script.csv")
 
 df = load_data()
 
@@ -32,7 +33,7 @@ df = load_data()
 # Sidebar – brukarval
 # --------------------------------------------------
 
-st.sidebar.header("Innstilling for scenatio")
+st.sidebar.header("Innstilling for scenario")
 
 artsvalg = st.sidebar.multiselect(
     "Dyreart",
