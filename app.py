@@ -146,21 +146,22 @@ try:# metadata.json
 
 except:
     METADATA = {
-        'sist_oppdatert': "2025-01-01 12:00",
-        'første_kollisjon': "2025-01-01 12:00",
+        'sist_oppdatert': '2025-01-01 12:00",
+        'første_kollisjon': 2025-01-01 12:00",
         'siste_kollisjon': "2025-01-31 12:00"
     }
 
-def _fmt_dato(s):
-    try:
-        s_clean = str(s).replace(" kl.", "")
-        return pd.to_datetime(s_clean, dayfirst=True).strftime("%d.%m.%y kl. %H:%M")
-    except Exception:
-        return str(s)  # fallback: vis råverdi
 
-sist_oppdatert  = _fmt_dato(METADATA['sist_oppdatert'])
-første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
-siste_kollisjon  = _fmt_dato(METADATA['siste_kollisjon'])
+def _fmt_dato(s):
+    return pd.to_datetime(s).strftime("%d.%m.%y kl. %H:%M")
+
+#sist_oppdatert  = _fmt_dato(METADATA['sist_oppdatert'])
+#første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
+#siste_kollisjon  = _fmt_dato(METADATA['siste_kollisjon'])
+
+sist_oppdatert =  "2025-01-01 12:00",
+første_kollisjon= "2025-01-01 12:00",
+siste_kollisjon= "2025-01-31 12:00"
 
 # --------------------------------------------------
 # Sidebar – brukarval
