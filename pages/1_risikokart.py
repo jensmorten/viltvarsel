@@ -24,8 +24,8 @@ st.markdown(
 
 #@st.cache_data
 def load_data():
-    #return pd.read_csv("data/frekvens_årstid_script.csv")
-    return pd.read_csv("https://raw.githubusercontent.com/jensmorten/viltvarsel/refs/heads/main/data/frekvens_%C3%A5rstid_script.csv", sep=",")
+    return pd.read_csv("data/frekvens_årstid_script.csv")
+    #return pd.read_csv("https://raw.githubusercontent.com/jensmorten/viltvarsel/refs/heads/main/data/frekvens_%C3%A5rstid_script.csv", sep=",")
 
 df = load_data()
 
@@ -67,8 +67,6 @@ if not artsvalg:
 # Filtrer data
 # --------------------------------------------------
 
-
-print(df.head())
 
 df_filt = df[
     (df["Art"].isin(artsvalg)) &
