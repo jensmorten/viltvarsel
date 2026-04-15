@@ -73,9 +73,9 @@ df_filt = df[
     (df["lysforhold"] == lys)
 ].copy()
 
-if df_filt.empty:
-    st.warning("Ingen data for dette valet.")
-    st.stop()
+#if df_filt.empty:
+#    st.warning("Ingen data for dette valet.")
+#    st.stop()
 
 # --------------------------------------------------
 # Aggreger per vegstrekning
