@@ -11,7 +11,7 @@ import functions as f
 import json 
 
 
-df = pd.read_csv('data/Fallvilt_tidspunkter.csv', sep=";")
+df = pd.read_csv('Fallvilt_nvdb_enriched_latest.csv', sep=";")
 
 df["HendelsesDatoTid"] = pd.to_datetime(df["HendelsesDatoTid"])
 

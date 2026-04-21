@@ -2,7 +2,7 @@ import pandas as pd
 import functions as f
 
 ###Last data
-df = pd.read_csv('data/Fallvilt_tidspunkter.csv', sep=";")
+df = pd.read_csv('datauttrekk/Fallvilt_nvdb_enriched_latest.csv', sep=";")
 
 ###Filtrer dynamisk 1 år tilbake
 df["HendelsesDatoTid"] = pd.to_datetime(df["HendelsesDatoTid"]).copy()
@@ -102,5 +102,5 @@ df["samanlikning_yrke"] = df["årsrisiko"].apply(
 )
 
 
-df.to_csv("data/frekvens_script_2.csv",encoding='utf-8', index=False)
+df.to_csv("frekvens_silver_latest.csv",encoding='utf-8', index=False)
 print(f"🎈 Hurra! {len(df)} grunnfrekvensar lagra to .csv-file")
