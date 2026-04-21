@@ -127,7 +127,7 @@ def lyskategori_fra_tidspunkt(ts):
     
 
 def maaned_til_arstid(dato):
-    m = dato.month
+    m = dato
     if m in [12, 1, 2]:
         return "vinter"
     elif m in [3, 4, 5]:

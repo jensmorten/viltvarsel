@@ -5,8 +5,8 @@ from tqdm import tqdm
 from typing import Dict, Tuple
 
 # Input and output file paths
-input_file = 'Fallvilt_trdlag_2016-2026_enriched.csv'
-output_file = 'Fallvilt_trdlag_2016-2026_vegobjekter.csv'  # generalized name
+input_file = 'Fallvilt_nvdb_enriched_latest.csv'
+output_file = 'fallvilt_bronse_latest.csv'  # generalized name
 
 # REQUIRED by NVDB Les V4: X-Client must be set
 headers = {
