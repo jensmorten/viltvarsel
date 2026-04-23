@@ -2,7 +2,7 @@ import pandas as pd
 import functions as f
 
 ###Last data
-df = pd.read_csv('datauttrekk/fallvilt_tidspunkter.csv', sep=";")
+df = pd.read_csv('data/Fallvilt_tidspunkter.csv', sep=";")
 
 ###Filtrer dynamisk 1 år tilbake
 df["HendelsesDatoTid"] = pd.to_datetime(df["HendelsesDatoTid"]).copy()
