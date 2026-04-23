@@ -1,0 +1,50 @@
+name: Oppdater Fallvilt_tidspunkter.csv
+
+on:
+  schedule:
+    # Kjører kl. 05:00 UTC = 07:00 norsk sommertid / 06:00 vintertid
+    - cron: "0 5 * * *"
+  workflow_dispatch: # Kan også kjøres manuelt fra GitHub-UI
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Trengs for å pushe CSV tilbake til repo
+
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v4
+
+      - name: Sett opp Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Installer avhengigheter
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install requests tqdm python-dotenv statsmodels
+
+      - name: Opprett .env med API-nøkler
+        working-directory: datauttrekk
+        run: |
+          echo "clientID=${{ secrets.FROST_CLIENT_ID }}" >> .env
+          echo "clientSecret=${{ secrets.FROST_CLIENT_SECRET }}" >> .env
+
+      - name: Kjør pipeline
+        working-directory: datauttrekk
+        run: python run_pipeline.py
+
+      - name: Kopier resultat til data/
+        run: cp datauttrekk/Fallvilt_tidspunkter.csv data/Fallvilt_tidspunkter.csv
+
+      - name: Commit og push oppdatert CSV
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/Fallvilt_tidspunkter.csv
+          git diff --cached --quiet || git commit -m "auto: oppdater Fallvilt_tidspunkter.csv [$(date -u +%Y-%m-%d)]"
+          git push
