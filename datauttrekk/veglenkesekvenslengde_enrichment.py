@@ -7,8 +7,8 @@ from typing import Dict
 # =======================
 # Config
 # =======================
-input_file = 'Fallvilt_trdlag_2016-2026_vegobjekter.csv'
-output_file = 'Fallvilt_trdlag_2016-2026_veglenkesekvenslengde.csv'
+input_file = 'Fallvilt_vegobjekter.csv'
+output_file = 'Fallvilt_veglenkesekvenslengde.csv'
 
 # Name of the input column that contains veglenkesekvensId (exact header text)
 VEGLENKESEKV_ID_COL = 'veglenkesekvensid'

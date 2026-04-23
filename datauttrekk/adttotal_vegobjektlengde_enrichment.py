@@ -6,8 +6,8 @@ from typing import Dict, Tuple, Optional
 
 # ---- Files ----
 # Use the output from your previous script as input here:
-input_file = 'Fallvilt_trdlag_2016-2026_vegobjekter.csv'
-output_file = 'Fallvilt_trdlag_2016-2026_adttotallengder.csv'
+input_file = 'Fallvilt_vegobjekter.csv'
+output_file = 'Fallvilt_adttotallengder.csv'
 
 # ---- NVDB headers (same style as before) ----
 headers = {

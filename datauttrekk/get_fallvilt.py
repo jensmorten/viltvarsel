@@ -305,7 +305,7 @@ def main():
         arsak="PåkjørtAvMotorkjøretøy",
     )
 
-    to_csv_custom(rows, "fallvilt_latest.csv")
+    to_csv_custom(rows, "Fallvilt.csv")
 
 
 if __name__ == "__main__":

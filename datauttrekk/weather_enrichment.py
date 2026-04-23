@@ -15,7 +15,7 @@ import threading
 # =======================
 # KONFIG
 # =======================
-INPUT_CSV  = "Fallvilt_trdlag_2016-2026_adttotallengder.csv"
+INPUT_CSV  = "Fallvilt_adttotallengder.csv"
 OUTPUT_CSV = "Fallvilt_beriket_med_vær.csv"
 
 CHUNK_SIZE = 600
