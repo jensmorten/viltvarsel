@@ -334,6 +334,17 @@ def main():
     if os.path.exists(OUTPUT_CSV):
         os.remove(OUTPUT_CSV)
 
+    # Auth-/tilkoblingsprobe mot Frost: feil tidleg om nøklane ikkje virkar
+    print("Verifiserer Frost API-tilgang ...")
+    try:
+        nearest_station_id(10.39, 63.43)  # Trondheim sentrum
+        print("✅ Frost API-tilgang OK")
+    except Exception as e:
+        raise SystemExit(
+            f"❌ Klarte ikkje å kontakte Frost API: {e}\n"
+            "Sjekk at clientID og clientSecret i .env er korrekte."
+        )
+
     # Les input-header
     with open(INPUT_CSV, "r", encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=";")
@@ -356,8 +367,8 @@ def main():
 
     # STREAMING: ikke bygg store chunks, skriv rad for rad
     for chunk in pd.read_csv(INPUT_CSV, sep=";", chunksize=CHUNK_SIZE, low_memory=False):
-        # Normaliser dato
-        chunk["Dato"] = pd.to_datetime(chunk["Dato"], format="%d.%m.%Y", errors="coerce")
+        # Normaliser dato (autodetekter format: ISO YYYY-MM-DD eller DD.MM.YYYY)
+        chunk["Dato"] = pd.to_datetime(chunk["Dato"], errors="coerce")
 
         # Submit rows to thread pool
         with concurrent.futures.ThreadPoolExecutor(max_workers=16) as executor:
@@ -373,7 +384,15 @@ def main():
 
     pbar.close()
     out_f.close()
-    print(f"🎉 Ferdig! Skrev {OUTPUT_CSV}")
+
+    # Sluttkontroll: feile om ingen rader fekk værdata
+    df_check = pd.read_csv(OUTPUT_CSV, sep=";", low_memory=False)
+    rows_with_weather = df_check["weather_station_id"].notna().sum() if "weather_station_id" in df_check.columns else 0
+    if rows_with_weather == 0:
+        raise SystemExit(
+            f"❌ Ingen av {len(df_check)} rader fekk værdata. Avbryt pipeline."
+        )
+    print(f"🎉 Ferdig! Skrev {OUTPUT_CSV} ({rows_with_weather}/{len(df_check)} rader med værdata)")
 
 if __name__ == "__main__":
     main()
