@@ -7,8 +7,8 @@ from tqdm import tqdm
 X_CLIENT = "fallvilt-posisjon-enricher" 
 
 # --- Config ---
-INPUT_FILE = "Fallvilt_latest.csv"
-OUTPUT_FILE = "Fallvilt_nvdb_enriched_latest.csv"
+INPUT_FILE = "Fallvilt.csv"
+OUTPUT_FILE = "Fallvilt_nvdb_enriched.csv"
 
 # NVDB posisjon endpoint (Les V4, produksjon)
 POSISJON_URL = "https://nvdbapiles.atlas.vegvesen.no/vegnett/api/v4/posisjon"
