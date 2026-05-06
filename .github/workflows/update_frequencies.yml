@@ -43,7 +43,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/frekvens_silver_latest.csv
           git add METADATA.json
-          git add ARSTID_JUSTERINGG.json
+          git add ARSTID_JUSTERING.json
           git add LYSJUSTERING.json
           git diff --cached --quiet || git commit -m "auto: oppdater Fallvilt_tidspunkter.csv [$(date -u +%Y-%m-%d)]"
           git reset --hard HEAD
