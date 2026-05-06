@@ -35,7 +35,7 @@ jobs:
         run: cp frekvens_silver_latest.csv data/frekvens_silver_latest.csv
 
       - name: oppdater justeringsfaktor
-        run: python lag_justeringfaktorer.py
+        run: python lag_justeringsfaktorer.py
 
       - name: Commit og push oppdatert CSV
         run: |
