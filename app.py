@@ -42,8 +42,6 @@ def finn_årstid(dato):
     else:
         return "haust"
 
-ARSTID_JUSTERING=json.loads()
-
 with open('ARSTID_JUSTERING.json', 'r', encoding='utf-8') as file:
     ARSTID_JUSTERING = json.load(file)
 
