@@ -11,7 +11,7 @@ from pyproj import Transformer
 import branca.colormap as cm
 import asyncio
 import httpx
-import folium   # ← DENNE mangla
+import folium  
 from typing import Optional, Dict
 from streamlit.components.v1 import html
 
@@ -127,7 +127,7 @@ def lyskategori_fra_tidspunkt(ts):
     
 
 def maaned_til_arstid(dato):
-    m = dato
+    m = dato.month
     if m in [12, 1, 2]:
         return "vinter"
     elif m in [3, 4, 5]:

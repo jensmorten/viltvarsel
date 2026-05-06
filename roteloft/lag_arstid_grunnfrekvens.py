@@ -63,7 +63,6 @@ df["antall_kollisjoner"] = (
     .transform("size")
 )
 
-
 ###For å lage en troverdig frekvens treng vi 3 eller fleire hendingar
 df=df[df["antall_kollisjoner"] >=2].copy()
 
@@ -98,5 +97,5 @@ df["samanlikning_yrke"] = df["årsrisiko"].apply(
 )
 
 
-df.to_csv("data/frekvens_årstid_script.csv",encoding='utf-8', index=False)
+df.to_csv("data/frekvens_årstid.csv",encoding='utf-8', index=False)
 print(f"🎈 Hurra! {len(df)} grunnfrekvensar lagra to .csv-file")
