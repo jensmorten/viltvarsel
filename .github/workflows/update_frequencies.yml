@@ -32,7 +32,7 @@ jobs:
         run: python lag_grunnfrekvens.py
 
       - name: Kopier resultat til data/
-        run: cp frekvens_silver_latest data/frekvens_silver_latest.csv
+        run: cp frekvens_silver_latest.csv data/frekvens_silver_latest.csv
 
       - name: oppdater justeringsfaktor
         run: python lag_justeringfaktorer.py
