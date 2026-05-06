@@ -42,11 +42,18 @@ def finn_årstid(dato):
     else:
         return "haust"
 
-ARSTID_JUSTERING=json.loads("ARSTID_JUSTERING.json")
-LYS_JUSTERING=json.loads("LYSJUSTERING.json")
-METADATA = json.loads("METADATA.json")
-DAGENS_ÅRSTID = finn_årstid(date.today())
+ARSTID_JUSTERING=json.loads()
 
+with open('ARSTID_JUSTERING.json', 'r', encoding='utf-8') as file:
+    ARSTID_JUSTERING = json.load(file)
+
+with open("LYSJUSTERING.json", 'r', encoding='utf-8') as file:
+    LYS_JUSTERING = json.load(file)
+
+with open("METADATA.json", 'r', encoding='utf-8') as file:
+    METADATA = json.load(file)
+
+DAGENS_ÅRSTID = finn_årstid(date.today())
 
 
 def finn_lys(now):
