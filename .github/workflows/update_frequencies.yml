@@ -1,0 +1,51 @@
+name: Oppdater frekvens og justeringsfaktor
+
+on:
+  schedule:
+    # Kjører kl. 07:00 UTC = 09:00 norsk sommertid / 08:00 vintertid
+    - cron: "0 7 * * *"
+  workflow_dispatch: # Kan også kjøres manuelt fra GitHub-UI
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Trengs for å pushe CSV tilbake til repo
+
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v4
+
+      - name: Sett opp Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Installer avhengigheter
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install requests tqdm python-dotenv statsmodels
+
+      - name: oppdater frekvens
+        run: python lag_grunnfrekvens.py
+
+      - name: Kopier resultat til data/
+        run: cp frekvens_silver_latest data/frekvens_silver_latest.csv
+
+      - name: oppdater justeringsfaktor
+        run: python lag_justeringfaktorer.py
+
+      - name: Commit og push oppdatert CSV
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/frekvens_silver_latest.csv
+          git add METADATA.json
+          git add ARSTID_JUSTERINGG.json
+          git add LYSJUSTERING.json
+          git diff --cached --quiet || git commit -m "auto: oppdater Fallvilt_tidspunkter.csv [$(date -u +%Y-%m-%d)]"
+          git reset --hard HEAD
+          git pull --rebase origin main
+          git push
