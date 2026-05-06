@@ -105,16 +105,14 @@ df=df[['Vegobjekt_540_id',
 df=df.drop_duplicates()
 df.dropna(inplace=True)
 
-
 df["samanlikning_yrke"] = df["årsrisiko"].apply(
     lambda x: f.map_arsrisiko_til_yrke(x)
 )
 
-if df['Vegobjekt_540_id'].count()>150:
+if df['Vegobjekt_540_id'].count()>0:
     df.to_csv("frekvens_silver_latest.csv",encoding='utf-8', index=False)
     print(f"🎈 Hurra! {len(df)} grunnfrekvensar lagra to .csv-file")
     with open("METADATA.json", "w", encoding="utf-8") as f:
         json.dump(METADATA, f, indent=4, sort_keys=True,  ensure_ascii=False)
-
 else:
     print( str(df['Vegobjekt_540_id'].count()) + " rader i resultat. for lite? Ingenting lagra" )
