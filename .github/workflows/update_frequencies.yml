@@ -1,14 +1,18 @@
 name: Oppdater frekvens og justeringsfaktor
 
 on:
-  schedule:
-    # Kjører kl. 07:00 UTC = 09:00 norsk sommertid / 08:00 vintertid
-    - cron: "0 7 * * *"
-  workflow_dispatch: # Kan også kjøres manuelt fra GitHub-UI
+  workflow_run:
+    workflows: ["Oppdater Fallvilt_tidspunkter.csv"]
+    types:
+      - completed
+
+  workflow_dispatch:
 
 jobs:
   pipeline:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    
     permissions:
       contents: write # Trengs for å pushe CSV tilbake til repo
 
