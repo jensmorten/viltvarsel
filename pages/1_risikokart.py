@@ -24,7 +24,7 @@ st.markdown(
 
 #@st.cache_data
 def load_data():
-    df=pd.read_csv("data/frekvens_silver_latest.csv", sep=",")
+    df=pd.read_csv("data/frekvens_årstid.csv", sep=",")
     #print(df.columns)
     return df
     
