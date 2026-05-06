@@ -3,6 +3,7 @@ import functions as f
 
 ###Last data
 df = pd.read_csv('data/Fallvilt_tidspunkter.csv', sep=";")
+print(df['FallviltId'].count())
 
 ###Filtrer dynamisk 1 år tilbake
 df["HendelsesDatoTid"] = pd.to_datetime(df["HendelsesDatoTid"]).copy()
@@ -14,10 +15,15 @@ df = df[
     (df["HendelsesDatoTid"] <= slutt)
 ].copy()
 
+print(df.columns)
+print(df[['Art', 'vegkategori', 'ÅDT, total']].head(10))
+
 #Filtrer relevante veger og dyr
 df=df[df['Art'].isin(['Elg', 'Hjort', 'Rådyr'])].copy()  
 df=df[df['vegkategori'].isin(['E','F','K'])].copy()
+
 df=df[df['ÅDT, total']>100].copy()
+
 
 df["UTM33_øst_int"] = (
     df["UTM33 øst"]
@@ -43,6 +49,7 @@ df["Vegnamn"] = (
 
 ###TA bare med relevante kolonner videre
 df=df[['Vegobjekt_540_id','Vegnamn', 'Art','ÅDT, total','Vegobjekt_540_lengde', 'UTM_nord_int', 'UTM33_øst_int']].copy()
+
 
 kolonner = [
     "ÅDT, total", ##vi antar bare 1 verdi for hvert vegobjekt-id, men i fall det er ulikt tar vi gjennomsnitt
