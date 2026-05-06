@@ -42,20 +42,12 @@ def finn_årstid(dato):
     else:
         return "haust"
 
-
-#ARSTID_JUSTERING = {
-#    "haust": 1.00,
-#    "vinter": 0.98,
-#    "vår": 0.85,
-#    "sommar": 0.79,
-#}
-
+ARSTID_JUSTERING=json.loads("ARSTID_JUSTERING.json")
+LYS_JUSTERING=json.loads("LYSJUSTERING.json")
+METADATA = json.loads("METADATA.json")
 DAGENS_ÅRSTID = finn_årstid(date.today())
 
-#LYS_JUSTERING = {
-#    'dag': 1.0, 
-#    'natt': 1.09, 
-#    'skumring': 1.08}
+
 
 def finn_lys(now):
     TRONDELAG = LocationInfo(
@@ -84,72 +76,74 @@ LYSFORHOLD_NO = finn_lys(datetime.now(tz=ZoneInfo("Europe/Oslo")))
 #    df = pd.read_csv("frekvens_final.csv", encoding="utf-8")
 #    return df
 
+df = pd.read_csv("https://raw.githubusercontent.com/jensmorten/viltvarsel/refs/heads/main/data/frekvens_silver_latest.csv", encoding="utf-8")
 
-credential = ClientSecretCredential(
-    tenant_id=st.secrets["Tenant_ID"],
-    client_id=st.secrets["Client_ID"],
-    client_secret=st.secrets["Client_secret_value"]
-)
+###DEPRECATED FABRIC 
 
-try:
-    account_url = "https://onelake.dfs.fabric.microsoft.com"
-    service_client = DataLakeServiceClient(account_url, credential=credential)
-    file_system_client = service_client.get_file_system_client("Viltmedaljong")
-    file_client = file_system_client.get_file_client(
-    "vilt_lakehouse.lakehouse/Files/fallvilt/silver/fallvilt_silver.csv"
-    )
-    download = file_client.download_file()
-    data = download.readall()
-    df = pd.read_csv(BytesIO(data), sep=";")
-except:
-    df = pd.read_csv("https://raw.githubusercontent.com/jensmorten/viltvarsel/refs/heads/main/data/frekvens_script_2.csv", encoding="utf-8")
+# credential = ClientSecretCredential(
+#     tenant_id=st.secrets["Tenant_ID"],
+#     client_id=st.secrets["Client_ID"],
+#     client_secret=st.secrets["Client_secret_value"]
+# )
+# try:
+#     account_url = "https://onelake.dfs.fabric.microsoft.com"
+#     service_client = DataLakeServiceClient(account_url, credential=credential)
+#     file_system_client = service_client.get_file_system_client("Viltmedaljong")
+#     file_client = file_system_client.get_file_client(
+#     "vilt_lakehouse.lakehouse/Files/fallvilt/silver/fallvilt_silver.csv"
+#     )
+#     download = file_client.download_file()
+#     data = download.readall()
+#     df = pd.read_csv(BytesIO(data), sep=";")
+# except:
+#     df = pd.read_csv("https://raw.githubusercontent.com/jensmorten/viltvarsel/refs/heads/main/data/frekvens_script_2.csv", encoding="utf-8")
 
-try:
-    file_client_arstid = file_system_client.get_file_client(
-        "vilt_lakehouse.lakehouse/Files/fallvilt/silver/ARSTID_JUSTERING.json"
-        )
-    download_arstid = file_client_arstid.download_file()
-    data_arstid = download_arstid.readall()
-    ARSTID_JUSTERING = json.loads(data_arstid)
-except:
-    ARSTID_JUSTERING = {
-    "haust": 1.00,
-    "vinter": 0.98,
-    "vår": 0.85,
-    "sommar": 0.79,
-    }
+# try:
+#     file_client_arstid = file_system_client.get_file_client(
+#         "vilt_lakehouse.lakehouse/Files/fallvilt/silver/ARSTID_JUSTERING.json"
+#         )
+#     download_arstid = file_client_arstid.download_file()
+#     data_arstid = download_arstid.readall()
+#     ARSTID_JUSTERING = json.loads(data_arstid)
+# except:
+#     ARSTID_JUSTERING = {
+#     "haust": 1.00,
+#     "vinter": 0.98,
+#     "vår": 0.85,
+#     "sommar": 0.79,
+#     }
 
-try:
-    # LYSJUSTERING.json
-    file_client_lys = file_system_client.get_file_client(
-        "vilt_lakehouse.lakehouse/Files/fallvilt/silver/LYSJUSTERING.json"
-    )
-    download_lys = file_client_lys.download_file()
-    data_lys = download_lys.readall()
-    LYS_JUSTERING = json.loads(data_lys)
-except:
-    LYS_JUSTERING = {
-    'dag': 1.0, 
-    'natt': 1.09, 
-    'skumring': 1.08
-    }
+# try:
+#     # LYSJUSTERING.json
+#     file_client_lys = file_system_client.get_file_client(
+#         "vilt_lakehouse.lakehouse/Files/fallvilt/silver/LYSJUSTERING.json"
+#     )
+#     download_lys = file_client_lys.download_file()
+#     data_lys = download_lys.readall()
+#     LYS_JUSTERING = json.loads(data_lys)
+# except:
+#     LYS_JUSTERING = {
+#     'dag': 1.0, 
+#     'natt': 1.09, 
+#     'skumring': 1.08
+#     }
 
-try:# metadata.json
-    file_client_meta = file_system_client.get_file_client(
-        "vilt_lakehouse.lakehouse/Files/fallvilt/silver/metadata.json"
-    )
+# try:# metadata.json
+#     file_client_meta = file_system_client.get_file_client(
+#         "vilt_lakehouse.lakehouse/Files/fallvilt/silver/metadata.json"
+#     )
 
-    download_meta = file_client_meta.download_file()
-    meta_data = download_meta.readall()
+#     download_meta = file_client_meta.download_file()
+#     meta_data = download_meta.readall()
 
-    METADATA = json.loads(meta_data)
+#     METADATA = json.loads(meta_data)
 
-except:
-    METADATA = {
-        'sist_oppdatert': "31.01.2026 kl. 12:00",
-        'første_kollisjon': "01.01.2025 kl. 12:00",
-        'siste_kollisjon': "31.02.2026 kl. 12:00"
-    }
+# except:
+#     METADATA = {
+#         'sist_oppdatert': "31.01.2026 kl. 12:00",
+#         'første_kollisjon': "01.01.2025 kl. 12:00",
+#         'siste_kollisjon': "31.02.2026 kl. 12:00"
+#     }
 
 
 def _fmt_dato(s):
@@ -160,9 +154,9 @@ try:
     første_kollisjon = _fmt_dato(METADATA['første_kollisjon'])
     siste_kollisjon  = _fmt_dato(METADATA['siste_kollisjon'])
 except:
-    sist_oppdatert= "31.01.2026 kl. 12:00"
-    første_kollisjon= "01.01.2025 kl. 12:00"
-    siste_kollisjon= "31.01.2026 kl. 12:00"
+    sist_oppdatert= "ukjent"
+    første_kollisjon= "ukjent"
+    siste_kollisjon= "ukjent"
 
 # --------------------------------------------------
 # Sidebar – brukarval
