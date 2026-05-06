@@ -92,7 +92,9 @@ ARSTID_JUSTERING = f.lag_arstidsjustering(model_nb)
 LYSJUSTERING=f.lag_lysjustering(model_nb)
 
 with open("ARSTID_JUSTERING.json", "w", encoding="utf-8") as f:
-    json.dump(ARSTID_JUSTERING, f, indent=4, sort_keys=True)
+    json.dump(ARSTID_JUSTERING, f, indent=4, sort_keys=True, ensure_ascii=False)
+    print("Justeringsfaktorer for årstid lagra")
 
 with open("LYSJUSTERING.json", "w", encoding="utf-8") as f:
-    json.dump(LYSJUSTERING, f, indent=4, sort_keys=True)
+    json.dump(LYSJUSTERING, f, indent=4, sort_keys=True, ensure_ascii=False)
+    print("Justeringsfaktorer for lysforhald lagra")

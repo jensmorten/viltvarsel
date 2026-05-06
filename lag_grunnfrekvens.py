@@ -1,9 +1,9 @@
 import pandas as pd
 import functions as f
+import json
 
 ###Last data
 df = pd.read_csv('data/Fallvilt_tidspunkter.csv', sep=";")
-print(df['FallviltId'].count())
 
 ###Filtrer dynamisk 1 år tilbake
 df["HendelsesDatoTid"] = pd.to_datetime(df["HendelsesDatoTid"]).copy()
@@ -15,27 +15,29 @@ df = df[
     (df["HendelsesDatoTid"] <= slutt)
 ].copy()
 
-print(df.columns)
-print(df[['Art', 'vegkategori', 'ÅDT, total']].head(10))
-
 #Filtrer relevante veger og dyr
 df=df[df['Art'].isin(['Elg', 'Hjort', 'Rådyr'])].copy()  
 df=df[df['vegkategori'].isin(['E','F','K'])].copy()
 
 df=df[df['ÅDT, total']>100].copy()
 
+METADATA = {
+        'sist_oppdatert': str(pd.Timestamp.now().normalize()),
+        'første_kollisjon': str(df["HendelsesDatoTid"].min()),
+        'siste_kollisjon': str(df["HendelsesDatoTid"].max())
+    }
 
 df["UTM33_øst_int"] = (
     df["UTM33 øst"]
     .astype(str)
-    .str.split(",", n=1)
+    .str.split(".", n=1)
     .str[0].astype(int)
 )
 
 df["UTM_nord_int"] = (
     df["UTM33 nord"]
     .astype(str)
-    .str.split(",", n=1)
+    .str.split(".", n=1)
     .str[0].astype(int)
 )
 
@@ -108,6 +110,11 @@ df["samanlikning_yrke"] = df["årsrisiko"].apply(
     lambda x: f.map_arsrisiko_til_yrke(x)
 )
 
+if df['Vegobjekt_540_id'].count()>150:
+    df.to_csv("frekvens_silver_latest.csv",encoding='utf-8', index=False)
+    print(f"🎈 Hurra! {len(df)} grunnfrekvensar lagra to .csv-file")
+    with open("METADATA.json", "w", encoding="utf-8") as f:
+        json.dump(METADATA, f, indent=4, sort_keys=True,  ensure_ascii=False)
 
-df.to_csv("frekvens_silver_latest.csv",encoding='utf-8', index=False)
-print(f"🎈 Hurra! {len(df)} grunnfrekvensar lagra to .csv-file")
+else:
+    print( str(df['Vegobjekt_540_id'].count()) + " rader i resultat. for lite? Ingenting lagra" )
