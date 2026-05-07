@@ -196,3 +196,47 @@ C(årstid)[T.vinter]            0.1071      0.059      1.811      0.070      -0.0
 C(årstid)[T.vår]              -0.2687      0.079     -3.394      0.001      -0.424      -0.114
 ==============================================================================================
 
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:     antall_kollisjoner   No. Observations:                 1556
+Model:                            GLM   Df Residuals:                     1550
+Model Family:        NegativeBinomial   Df Model:                            5
+Link Function:                    Log   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -2853.9
+Date:                Thu, 07 May 2026   Deviance:                       2200.8
+Time:                        14:36:40   Pearson chi2:                 5.79e+04
+No. Iterations:                     8   Pseudo R-squ. (CS):            0.03562
+Covariance Type:            nonrobust                                         
+==============================================================================================
+                                 coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------------------
+Intercept                    -10.4122      0.088   -118.261      0.000     -10.585     -10.240
+C(lyskategori)[T.natt]         0.1562      0.092      1.694      0.090      -0.025       0.337
+C(lyskategori)[T.skumring]     0.0909      0.080      1.142      0.254      -0.065       0.247
+C(årstid)[T.sommar]           -0.2384      0.080     -2.963      0.003      -0.396      -0.081
+C(årstid)[T.vinter]            0.1069      0.059      1.808      0.071      -0.009       0.223
+C(årstid)[T.vår]              -0.2791      0.080     -3.500      0.000      -0.435      -0.123
+==============================================================================================
+
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:     antall_kollisjoner   No. Observations:                 1556
+Model:                            GLM   Df Residuals:                     1550
+Model Family:        NegativeBinomial   Df Model:                            5
+Link Function:                    Log   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -2853.9
+Date:                Thu, 07 May 2026   Deviance:                       2200.8
+Time:                        14:38:04   Pearson chi2:                 5.79e+04
+No. Iterations:                     8   Pseudo R-squ. (CS):            0.03562
+Covariance Type:            nonrobust                                         
+==============================================================================================
+                                 coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------------------
+Intercept                    -10.4122      0.088   -118.261      0.000     -10.585     -10.240
+C(lyskategori)[T.natt]         0.1562      0.092      1.694      0.090      -0.025       0.337
+C(lyskategori)[T.skumring]     0.0909      0.080      1.142      0.254      -0.065       0.247
+C(årstid)[T.sommar]           -0.2384      0.080     -2.963      0.003      -0.396      -0.081
+C(årstid)[T.vinter]            0.1069      0.059      1.808      0.071      -0.009       0.223
+C(årstid)[T.vår]              -0.2791      0.080     -3.500      0.000      -0.435      -0.123
+==============================================================================================
+

@@ -38,7 +38,7 @@ df= df[df['UkjentTidspunkt']==False].copy()
 
 
 # Representativ plassering for Trøndelag
-df["årstid"] = df["HendelsesDatoTid"].dt.month.apply(f.maaned_til_arstid)
+df["årstid"] = df["HendelsesDatoTid"].apply(f.maaned_til_arstid)
 df["årstid"] = df["årstid"].astype("category").copy()
 
 df["lyskategori"] = df["HendelsesDatoTid"].apply(f.lyskategori_fra_tidspunkt)
